@@ -47,7 +47,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     /**
      * Format of the batch input data
      */
-    public String batchFormat = "commandline";
+    public String batchFormat = "cmdline";
     
     /**
      * The desired verbosity
@@ -155,7 +155,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     final static LongOpt[] longOptsOnlyOnce = new LongOpt[] {
             new LongOpt("admin", LongOpt.NO_ARGUMENT, null, 'A'),
             new LongOpt("appendlogfile", LongOpt.REQUIRED_ARGUMENT, null, 1),
-            new LongOpt("batch", LongOpt.OPTIONAL_ARGUMENT, null, 2),
+            new LongOpt("batch", LongOpt.OPTIONAL_ARGUMENT, null, 'b'),
             new LongOpt("batch-format", LongOpt.REQUIRED_ARGUMENT, null, 13),
             new LongOpt("configdir", LongOpt.REQUIRED_ARGUMENT, null, 'c'),
             new LongOpt("debug", LongOpt.NO_ARGUMENT, null, 'd'),
@@ -172,7 +172,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("verbose", LongOpt.NO_ARGUMENT, null, 'v'),
             new LongOpt("Xprint-manpage", LongOpt.NO_ARGUMENT, null, -3),
     };
-    final static String shortOptsOnlyOnce = "Ac:dh::l:qv"; 
+    final static String shortOptsOnlyOnce = "Ab::c:dh::l:qv"; 
     
     final static LongOpt[] longOptsPerJob = new LongOpt[] {
             new LongOpt("archive-job", LongOpt.OPTIONAL_ARGUMENT, null, 9),
@@ -240,7 +240,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
                 logFile = getopt.getOptarg();
                 appendToLog = true;
                 break;
-            case 2: // batch
+            case 'b': // batch
                 optarg = getopt.getOptarg();
                 batchInput = (optarg == null) ?  "-" : optarg;
                 break;
@@ -493,6 +493,14 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             }
         }
         return null;
+    }
+    
+    public boolean isBatch() {
+    	return (batchInput != null);
+    }
+    
+    public boolean isSendAction() {
+    	return (poll || recipients.size() > 0 || queryJobStatus.size() > 0);
     }
     
     public ConsCommandLineOpts() {

@@ -3,14 +3,26 @@
  */
 package yajhfc.console;
 
+import gnu.hylafax.HylaFAXClient;
+import gnu.hylafax.Job;
+import gnu.inet.ftp.ServerResponseException;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.MessageFormat;
+import java.util.Locale;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import yajhfc.FaxNotification;
 import yajhfc.FaxResolution;
+import yajhfc.HylaClientManager;
 import yajhfc.IDAndNameOptions;
 import yajhfc.PaperSize;
 import yajhfc.SenderIdentity;
@@ -28,6 +40,7 @@ import yajhfc.server.ServerOptions;
 import yajhfc.ui.YajOptionPane;
 import yajhfc.ui.console.ConsoleIO;
 import yajhfc.ui.console.ConsoleProgressUI;
+import yajhfc.util.ExternalProcessExecutor;
 
 /**
  * @author jonas
@@ -35,6 +48,18 @@ import yajhfc.ui.console.ConsoleProgressUI;
  */
 public class Launcher {
     private static final Logger log = Logger.getLogger(Launcher.class.getName());
+    
+    private static final Semaphore faxLock = new Semaphore(0);
+    
+    public static final int EXIT_CODE_SUCCESS = 0;
+    public static final int EXIT_CODE_GENERAL_FAILURE = 1;
+    public static final int EXIT_CODE_WRONG_PARAMETERS = 2;
+    public static final int EXIT_CODE_SEND_FAX_FAILED = 3;
+    public static final int EXIT_CODE_WRONG_BATCH_DATA = 4;
+    
+    private static String _(String key) {
+    	return key;
+    }
     
     private static void printValidationError(String text) {
         System.err.println(text);
@@ -45,39 +70,38 @@ public class Launcher {
     
     private static boolean validateCommandLineOpts(ConsCommandLineOpts opts) {
         if (opts.stdin && "-".equals(opts.batchInput)) {
-            printValidationError("You cannot specify both --stdin and use batch input from stdin.");
+            printValidationError(_("You cannot specify both --stdin and use batch input from stdin."));
             return false;
         }
         
-        return validatePerJobCommandLineOpts(opts);
+        if (!opts.isBatch() || opts.isSendAction())
+        	return validatePerJobCommandLineOpts(opts);
+        else 
+        	return true;
     }
 
     private static boolean validatePerJobCommandLineOpts(ConsCommandLineOpts opts) {
         if (opts.poll) {
             if (opts.fileNames.size() > 0 || opts.stdin) {
-                printValidationError("You cannot specify poll mode and documents to send.");
+                printValidationError(_("You cannot specify poll mode and have documents to send."));
                 return false;
             }
             if (opts.queryJobStatus.size() > 0) {
-                printValidationError("You cannot specify poll mode and query job status.");
+                printValidationError(_("You cannot specify poll mode and query job status."));
                 return false;
             }
         } else if (opts.queryJobStatus.size() > 0) {
             if (opts.fileNames.size() > 0 || opts.stdin) {
-                printValidationError("You cannot both query a job status and specify documents to send.");
+                printValidationError(_("You cannot both query a job status and specify documents to send."));
                 return false;
             }
             if (opts.recipients.size() > 0) {
-                printValidationError("You cannot both query a job status and specify recipients.");
+                printValidationError(_("You cannot both query a job status and specify recipients."));
                 return false;
             }
         } else {
             if (opts.recipients.size() == 0) {
-                printValidationError("In console mode you have to specify at least one recipient.");
-                return false;
-            }
-            if (opts.fileNames.size() == 0 && !opts.stdin) {
-                printValidationError("In console mode you have to specify at least one file to send or --stdin.");
+                printValidationError(_("You have to specify at least one recipient or poll or query job status."));
                 return false;
             }
         }
@@ -95,13 +119,64 @@ public class Launcher {
         Launcher2.setupFirstStage(args, opts); // IMPORTANT: Don't access Utils before this line!
         
         Launcher2.application = new ConsoleMainFrame();
+        ConsoleIO.getDefault().setVerbosity(opts.verbosity);
         
         PluginManager.initializeAllKnownPlugins(PluginManager.STARTUP_MODE_NO_GUI); // TODO: Startup mode constant?
 
         if (!validateCommandLineOpts(opts)) {
-            System.exit(1);
+            System.exit(EXIT_CODE_WRONG_PARAMETERS);
         }
-        processCommandLineForJob(opts);
+        if (opts.isSendAction()) {
+        	processCommandLineForJob(opts);
+        }
+		if (opts.isBatch()) {
+			processBatch(opts);
+		}
+        System.exit(0);
+    }
+    
+    protected static void processBatch(ConsCommandLineOpts opts) {
+    	if ("cmdline".equalsIgnoreCase(opts.batchFormat)) {
+    		processBatchCmdLineFmt(opts);
+    	} else {
+    		System.err.println(_("Unsupported batch data format: ") + opts.batchFormat);
+    		System.exit(EXIT_CODE_WRONG_PARAMETERS);
+    	}
+    }
+    
+    protected static void processBatchCmdLineFmt(ConsCommandLineOpts opts) {
+    	try {
+			InputStream inStream;
+			if ("-".equals(opts.batchInput)) {
+				inStream = System.in;
+			} else {
+				inStream = new FileInputStream(opts.batchInput);
+			}
+			BufferedReader r = new BufferedReader(new InputStreamReader(inStream));
+			String line;
+			String[] dummy = new String[0];
+			while ((line = r.readLine()) != null) {
+				line = line.trim();
+				if (line.length() == 0 || line.startsWith("#"))
+					continue;
+				
+				String[] args = ExternalProcessExecutor.splitCommandLine(line, true).toArray(dummy);
+				ConsCommandLineOpts jobOpts = new ConsCommandLineOpts();
+				jobOpts.parse(args, true);
+				
+				if (validatePerJobCommandLineOpts(jobOpts)) {
+					processCommandLineForJob(jobOpts);
+				} else {
+					printValidationError(_("Invalid data specified") + ": " + line);
+					System.exit(EXIT_CODE_WRONG_BATCH_DATA);
+				}
+			}
+			r.close();
+		} catch (IOException e) {
+			System.err.println(MessageFormat.format(_("Error processing the batch data from \"{0}\":"), opts.batchInput));
+			e.printStackTrace();
+			log.log(Level.SEVERE, "Error processing the batch data from " + opts.batchInput, e);
+		}
     }
 
     protected static void processCommandLineForJob(ConsCommandLineOpts opts) {
@@ -130,8 +205,8 @@ public class Launcher {
                 sendFax(server, opts);
             }
         } catch (Exception ex) {
-            dialogs.showExceptionDialog(Utils._("Error sending the fax:"), ex);
-            System.exit(2);
+            dialogs.showExceptionDialog(_("Error sending the fax:"), ex);
+            System.exit(EXIT_CODE_SEND_FAX_FAILED);
         }
     }
 
@@ -144,8 +219,12 @@ public class Launcher {
         SendController sendController = new SendController(server, dialogs, opts.poll, progressUI);
         sendController.addSendControllerListener(new SendControllerListener() {
            public void sendOperationComplete(boolean success) {
-               ConsoleIO.getDefault().println(ConsoleIO.VERBOSITY_NORMAL, success ? "Fax(es) sent successfully" : "Sending fax(es) failed");
-               System.exit(success ? 0 : 1);
+        	   if (success) {
+        		   faxLock.release();
+        	   } else {
+                   ConsoleIO.getDefault().println(ConsoleIO.VERBOSITY_NORMAL, _("Sending a fax failed, bailing out."));
+                   System.exit(EXIT_CODE_SEND_FAX_FAILED);
+        	   }
            } 
         });
 
@@ -176,7 +255,7 @@ public class Launcher {
             for (String prop : opts.customProperties) {
                 int pos = prop.indexOf('=');
                 if (pos <= 0) {
-                    printValidationError("Invalid custom property: " + prop);
+                    printValidationError(_("Invalid custom property") + ": " + prop);
                 } else {
                     sendController.getCustomProperties().put(prop.substring(0, pos), prop.substring(pos+1));
                 }
@@ -190,7 +269,7 @@ public class Launcher {
         if (opts.killTime != null) {
             long delayMillis = opts.killTime.getTime() - System.currentTimeMillis();
             if (delayMillis <= 0) {
-                printValidationError("The kill time must be in the future!");
+                printValidationError(_("The kill time must be in the future!"));
             } else {
                 sendController.setKillTime((int)(delayMillis / (1000*60)));
             }
@@ -201,43 +280,51 @@ public class Launcher {
         if (opts.modem != null)
             sendController.setSelectedModem(opts.modem);
         if (opts.notification != null) {
-            String n = opts.notification;
-            if ("NEVER".equalsIgnoreCase(n)) {
-                sendController.setNotificationType(FaxNotification.NEVER);
-            } else if ("DONE".equalsIgnoreCase(n)) {
-                sendController.setNotificationType(FaxNotification.DONE);
-            } else if ("REQUEUE".equalsIgnoreCase(n)) {
-                sendController.setNotificationType(FaxNotification.REQUEUE);
-            } else if ("DONE_AND_REQUEUE".equalsIgnoreCase(n) || "DONE+REQUEUE".equalsIgnoreCase(n)) {
-                sendController.setNotificationType(FaxNotification.DONE_AND_REQUEUE);
-            } else{
-                printValidationError("Invalid notification type: " + n);
+            String n = opts.notification.trim().toUpperCase(Locale.ENGLISH);
+            try {
+            	FaxNotification not = Enum.valueOf(FaxNotification.class, n);
+                sendController.setNotificationType(not);
+            } catch (Exception e) {
+                if (Utils.debugMode) {
+                    log.log(Level.FINE, "FaxNotification not found in enum", e);
+                }
+                if ("DONE+REQUEUE".equals(n)) {
+                    sendController.setNotificationType(FaxNotification.DONE_AND_REQUEUE);
+                } else {
+                    printValidationError(_("Invalid notification type") + ": " + n);
+                }
             }
         }
         if (opts.paperSize != null) {
             try {
-                PaperSize ps = Enum.valueOf(PaperSize.class, opts.paperSize.trim().toUpperCase());
+                PaperSize ps = Enum.valueOf(PaperSize.class, opts.paperSize.trim().toUpperCase(Locale.ENGLISH));
                 sendController.setPaperSize(ps);
             } catch (Exception e) {
                 if (Utils.debugMode) {
                     log.log(Level.WARNING, "Invalid paper size", e);
                 }
-                printValidationError("Invalid paper size: " + opts.paperSize);
+                printValidationError(_("Invalid paper size") + ": " + opts.paperSize);
             }
         }
         
         DefaultPBEntryFieldContainer.parseCmdLineStrings(sendController.getNumbers(), opts.recipients);
         
         if (opts.resolution != null) {
-            String r = opts.resolution;
-            if ("LOW".equalsIgnoreCase(r) || "98".equals(r)) {
-                sendController.setResolution(FaxResolution.LOW);
-            } else if ("HIGH".equalsIgnoreCase(r) || "196".equals(r)) {
-                sendController.setResolution(FaxResolution.HIGH);
-            } else if ("EXTENDED".equalsIgnoreCase(r)) {
-                sendController.setResolution(FaxResolution.EXTENDED);
-            } else {
-                printValidationError("Invalid fax resolution: " + r);
+            String r = opts.resolution.trim().toUpperCase(Locale.ENGLISH);
+            try {
+                FaxResolution res = Enum.valueOf(FaxResolution.class, r);
+                sendController.setResolution(res);
+            } catch (Exception e) {
+                if (Utils.debugMode) {
+                    log.log(Level.FINE, "FaxResolution not found in enum", e);
+                }
+                if ("98".equals(r)) {
+                    sendController.setResolution(FaxResolution.LOW);
+                } else if ("196".equals(r)) {
+                    sendController.setResolution(FaxResolution.HIGH);
+                } else {
+                    printValidationError(_("Invalid fax resolution") + ": " + r);
+                }
             }
         }
         if (opts.sendTime != null) {
@@ -248,11 +335,40 @@ public class Launcher {
         
         if (sendController.validateEntries()) {
             sendController.sendFax();
+            
+	        try {
+				faxLock.acquire();
+			} catch (InterruptedException e) {
+				log.log(Level.SEVERE, "Error waiting for fax to be sent", e);
+				System.exit(EXIT_CODE_GENERAL_FAILURE);
+			}
+        } else {
+        	printValidationError(_("Invalid data specified, bailing out..."));
+        	System.exit(EXIT_CODE_WRONG_PARAMETERS);
         }
     }
 
     protected static void queryJobState(Server server, ConsCommandLineOpts opts)
-            throws IOException, FileNotFoundException {
-        //TODO
+            throws IOException, FileNotFoundException, ServerResponseException {
+        YajOptionPane dialogs = Launcher2.application.getDialogUI();
+        
+        HylaClientManager clientMan = server.getClientManager();
+        HylaFAXClient hyfc = clientMan.beginServerTransaction(dialogs);
+        synchronized (hyfc) {
+			try {
+				for (Integer jobID : opts.queryJobStatus) {
+					Job job = hyfc.getJob(jobID);
+					
+					String state = job.getProperty("state");
+					System.out.println("Job " + jobID + " status: " + state);
+					for (String prop : opts.queryProperties) {
+						String val = job.getProperty(prop);
+						System.out.println("Job " + jobID + " property " + prop + ": " + val);
+					}
+				}
+			} finally {
+				clientMan.endServerTransaction();
+			}
+		}
     }
 }

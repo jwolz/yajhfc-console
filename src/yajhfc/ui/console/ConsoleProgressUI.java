@@ -65,7 +65,7 @@ public class ConsoleProgressUI implements ProgressUI {
      */
     public void showIndeterminateProgress(String message, String initialNote) {
         ConsoleIO cons = ConsoleIO.getDefault();
-        cons.println(ConsoleIO.VERBOSITY_NORMAL, message);
+        cons.println(ConsoleIO.VERBOSITY_NORMAL, message + "...");
         setNote(initialNote);
         showingIndeterminate = true;
     }
