@@ -1,0 +1,119 @@
+<project name="YajHFC-FOP" default="dist" basedir=".">
+	<description>
+        YajHFC console application build file
+        </description>
+	<!-- set global properties for this build -->
+	<property name="src" location="src"/>
+	<property name="java1-src" location="java1-src"/>
+	<property name="jar-extra" location="jar"/>
+	<property name="dist-extra" location="dist"/>
+	<property name="build.compiler" value="modern"/>
+
+	<property file="build.properties"/>
+	<property name="yajhfc-jar" location="../yajhfc/build/yajhfc.jar"/>
+
+	<property name="build" location="build"/>
+	<property name="i18n-bin" location="i18n/bin"/>
+	<property name="jar-output" location="${build}/yajhfc-console.jar"/>
+	<property name="srczip-output" location="${build}/yajhfc-console-src.zip"/>
+	<property name="binzip-output" location="${build}/yajhfc-console.zip"/>
+
+
+	<target name="init">
+	
+		<fail message="YajHFC jar not found. Edit build.properties to specify the correct location.">
+			<condition>
+				<not>
+				<available file="${yajhfc-jar}"/>
+				</not>
+			</condition>
+		</fail>
+
+
+		<!-- Find out if we have valid, precompiled translations -->
+		<uptodate property="i18n.havePrecompiled">
+			<srcfiles dir="i18n" includes="*_*.po,CommandLineOpts.po"/>
+			<compositemapper>
+				<mapper type="glob" from="Messages*.po"    to="${i18n-bin}/yajhfc/console/i18n/Messages*.class" />
+				<mapper type="glob" from="Messages*.po"    to="${i18n-bin}/yajhfc/console/i18n/Messages*$1.class" />
+				<mapper type="glob" from="CommandLine*.po" to="${i18n-bin}/yajhfc/console/i18n/CommandLine*.properties" />
+			</compositemapper>
+		</uptodate>
+
+
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}"/>
+		
+
+	</target>
+
+	<target name="i18n" unless="i18n.havePrecompiled" depends="init" description="compile the translations">
+		<exec executable="/bin/sh" dir="i18n" osfamily="unix">
+			<arg value="./fmtall.sh"/>
+		</exec>
+	</target>
+
+	<target name="compile" depends="init" description="compile the source code" >
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" includes="**/*.java" destdir="${build}" source="1.6" target="1.6" encoding="iso-8859-1" debug="true" debuglevel="lines,source">
+			<classpath>
+				<pathelement path="${classpath}"/>
+				<pathelement location="${yajhfc-jar}"/>
+			</classpath>
+		</javac>
+
+		<!-- the parts of the source code compatible to Java 1.1-->
+		<javac srcdir="${java1-src}" includes="yajhfc/**/*.java" destdir="${build}" source="1.3" target="1.1" encoding="utf-8" debug="true" debuglevel="lines,source">
+			<classpath>
+				<pathelement path="${classpath}"/>
+				<pathelement location="${yajhfc-jar}"/>
+				<pathelement location="${build}"/>
+			</classpath>
+		</javac>
+	</target>
+
+
+	<target name="dist" depends="compile,i18n" description="generate the distribution" >
+		<jar jarfile="${jar-output}" manifest="${src}/MANIFEST.MF">
+			<fileset dir="${build}" includes="yajhfc/**,org/**,de/**"/>
+			<fileset dir="${jar-extra}" />
+			<fileset dir="${i18n-bin}" /> 
+			<!-- <fileset dir="${src}" includes="COPYING,README*.txt,yajhfc/*.png,yajhfc/images/*,doc/*.html,doc/*.css,yajhfc/faxcover/*.ps"/> -->
+		</jar>
+
+		<zip destfile="${binzip-output}">
+			<zipfileset dir="${build}" includes="*.jar" />
+			<zipfileset dir="${dist-extra}" excludes="**/*.sh"/>
+			<zipfileset dir="${dist-extra}" includes="**/*.sh" filemode="0755"/>
+			<zipfileset file="${yajhfc-jar}"/>
+		</zip>
+	</target>
+
+	<target name="sourcedist" depends="init,i18n" description="generate the source distribution" >
+		<zip destfile="${srczip-output}">
+			<zipfileset dir=".">
+				<exclude name="bin/"/>
+				<exclude name="build/"/>
+				<exclude name="**/*.jar"/>
+				<exclude name="**/*.log"/>
+				<exclude name="**/*~"/>
+			</zipfileset>
+			<!-- <zipfileset dir="${src}" prefix="yajhfc/">
+				<include name="doc/faq-src/.latex2html-init"/>
+				<include name="doc/faq-src/*.tex"/>
+				<include name="doc/faq-src/*.sh"/>
+				<include name="yajhfc/i18n/*.class"/>
+			</zipfileset> -->
+		</zip>
+	</target>
+
+	<target name="fulldist" depends="dist,sourcedist" description="generate both source and binary distributions"/>
+
+	<target name="clean" description="clean up" >
+		<!-- Delete the ${build} directory tree and the jar file -->
+		<delete dir="${build}"/>
+		<delete file="${jar-output}"/>
+	</target>
+</project>

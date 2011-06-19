@@ -46,10 +46,10 @@ import yajhfc.util.ExternalProcessExecutor;
  * @author jonas
  *
  */
-public class Launcher {
-    private static final Logger log = Logger.getLogger(Launcher.class.getName());
+public class Main {
+    private static final Logger log = Logger.getLogger(Main.class.getName());
     
-    private static final Semaphore faxLock = new Semaphore(0);
+    static final Semaphore faxLock = new Semaphore(0);
     
     public static final int EXIT_CODE_SUCCESS = 0;
     public static final int EXIT_CODE_GENERAL_FAILURE = 1;
@@ -57,7 +57,7 @@ public class Launcher {
     public static final int EXIT_CODE_SEND_FAX_FAILED = 3;
     public static final int EXIT_CODE_WRONG_BATCH_DATA = 4;
     
-    private static String _(String key) {
+    static String _(String key) {
     	return key;
     }
     
@@ -81,16 +81,7 @@ public class Launcher {
     }
 
     private static boolean validatePerJobCommandLineOpts(ConsCommandLineOpts opts) {
-        if (opts.poll) {
-            if (opts.fileNames.size() > 0 || opts.stdin) {
-                printValidationError(_("You cannot specify poll mode and have documents to send."));
-                return false;
-            }
-            if (opts.queryJobStatus.size() > 0) {
-                printValidationError(_("You cannot specify poll mode and query job status."));
-                return false;
-            }
-        } else if (opts.queryJobStatus.size() > 0) {
+        if (opts.queryJobStatus.size() > 0) {
             if (opts.fileNames.size() > 0 || opts.stdin) {
                 printValidationError(_("You cannot both query a job status and specify documents to send."));
                 return false;
@@ -101,9 +92,15 @@ public class Launcher {
             }
         } else {
             if (opts.recipients.size() == 0) {
-                printValidationError(_("You have to specify at least one recipient or poll or query job status."));
+                printValidationError(_("You have to specify at least one recipient or query job status."));
                 return false;
             }
+            if (opts.poll) {
+                if (opts.fileNames.size() > 0 || opts.stdin) {
+                    printValidationError(_("You cannot specify poll mode and have documents to send."));
+                    return false;
+                }
+            } 
         }
         return true;
     }
@@ -354,6 +351,8 @@ public class Launcher {
         
         HylaClientManager clientMan = server.getClientManager();
         HylaFAXClient hyfc = clientMan.beginServerTransaction(dialogs);
+        if (hyfc == null)
+            System.exit(EXIT_CODE_GENERAL_FAILURE);
         synchronized (hyfc) {
 			try {
 				for (Integer jobID : opts.queryJobStatus) {

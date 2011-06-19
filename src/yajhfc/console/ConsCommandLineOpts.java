@@ -5,12 +5,16 @@ import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -171,6 +175,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("stdin", LongOpt.NO_ARGUMENT, null, 8),
             new LongOpt("verbose", LongOpt.NO_ARGUMENT, null, 'v'),
             new LongOpt("Xprint-manpage", LongOpt.NO_ARGUMENT, null, -3),
+            new LongOpt("Xprint-po-template", LongOpt.OPTIONAL_ARGUMENT, null, -4),
     };
     final static String shortOptsOnlyOnce = "Ab::c:dh::l:qv"; 
     
@@ -222,9 +227,18 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
         String optarg;
         while ((opt = getopt.getopt()) != -1) {
             switch (opt) {
+            case -4: // Xprint-po-template
+                try {
+                    POTemplate.printPOTemplate(longOpts, new PrintWriter((getopt.getOptarg() == null) ? System.out : new FileOutputStream(getopt.getOptarg())));
+                    System.exit(0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+                break;
             case -3: //Xprint-manpage // TODO
                 try {
-                    ManPrinter.printManPage(Launcher2.getConsoleWriter(), longOpts);
+                    new ManPrinter("yajhfc.console.i18n.CommandLineOpts").printManPage(Launcher2.getConsoleWriter(), sortLongOpts(longOpts));
                     System.exit(0);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -253,8 +267,8 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             case 'd': // debug
                 debugMode = true;
                 break;
-            case 'h': // help // TODO
-                HelpPrinter.printHelp(Launcher2.getConsoleWriter(), longOpts, getopt.getOptarg());
+            case 'h': // help 
+                new HelpPrinter("yajhfc.console.i18n.CommandLineOpts").printHelp(Launcher2.getConsoleWriter(), sortLongOpts(longOpts), getopt.getOptarg(), "cyajhfc");
                 System.exit(0);
                 break;
             case 3: // loaddriver
@@ -501,6 +515,25 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     
     public boolean isSendAction() {
     	return (poll || recipients.size() > 0 || queryJobStatus.size() > 0);
+    }
+    
+    public static LongOpt[] sortLongOpts(LongOpt[] in) {
+        LongOpt[] rv = in.clone();
+        Arrays.sort(rv, new Comparator<LongOpt>() {
+            @Override
+            public int compare(LongOpt o1, LongOpt o2) {
+                String n1 = o1.getName();
+                String n2 = o2.getName();
+                if ( n1.startsWith("X") && !n2.startsWith("X")) {
+                    return 1;
+                }
+                if (!n1.startsWith("X") &&  n2.startsWith("X")) {
+                    return -1;
+                }
+                return n1.compareTo(n2);
+            }
+        });
+        return rv;
     }
     
     public ConsCommandLineOpts() {

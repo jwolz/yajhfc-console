@@ -12,13 +12,11 @@ public class StreamConsoleIO extends ConsoleIO {
     @Override
     public void printfImpl(String format, Object[] args) {
         writer.format(format, args);
-        writer.flush();
     }
 
     @Override
     public String readLine(String fmt, Object... args) {
         writer.format(fmt, args);
-        writer.flush();
         try {
             return reader.readLine();
         } catch (IOException e) {
@@ -39,17 +37,15 @@ public class StreamConsoleIO extends ConsoleIO {
     @Override
     public void printImpl(String text) {
         writer.print(text);
-        writer.flush();
     }
     
     @Override
     public void printlnImpl(String text) {
         writer.println(text);
-        writer.flush();
     }
     
     public StreamConsoleIO() {
-        writer = new PrintWriter(System.out);
+        writer = new PrintWriter(System.out, true);
         reader = new BufferedReader(new InputStreamReader(System.in));
     }
 }
