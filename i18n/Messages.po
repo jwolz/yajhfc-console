@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-18 18:54+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/yajhfc/console/ConsCommandLineOpts.java:393
+#, java-format
+msgid "Invalid number \"{0}\" specified for argument {1}."
+msgstr ""
+
+#: ../src/yajhfc/console/ConsCommandLineOpts.java:477
+#, java-format
+msgid "Invalid date \"{0}\" specified for argument {1}."
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:73
+msgid "You cannot specify both --stdin and use batch input from stdin."
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:86
+msgid "You cannot specify poll mode and have documents to send."
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:90
+msgid "You cannot specify poll mode and query job status."
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:95
+msgid "You cannot both query a job status and specify documents to send."
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:99
+msgid "You cannot both query a job status and specify recipients."
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:104
+msgid "You have to specify at least one recipient or poll or query job status."
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:142
+msgid "Unsupported batch data format: "
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:170
+msgid "Invalid data specified"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:176
+#, java-format
+msgid "Error processing the batch data from \"{0}\":"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:208
+msgid "Error sending the fax:"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:225
+msgid "Sending a fax failed, bailing out."
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:258
+msgid "Invalid custom property"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:272
+msgid "The kill time must be in the future!"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:294
+msgid "Invalid notification type"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:306
+msgid "Invalid paper size"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:326
+msgid "Invalid fax resolution"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:346
+msgid "Invalid data specified, bailing out..."
+msgstr ""

@@ -1,0 +1,287 @@
+# Help texts for the command line.
+# Messages ending in -desc contain descriptions of the arguments,
+# while those ending in -arg contain the description of parameter to the argument
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Jonas Wolz <jonas.wolz@freenet.de>\n"
+"Language-Team: \n"
+
+# Untranslated text: Usage
+msgid "usage"
+msgstr "Usage"
+
+# Untranslated text: Argument description
+msgid "argument-description"
+msgstr "Argument description"
+
+# Untranslated text: OPTIONS
+msgid "options"
+msgstr "OPTIONS"
+
+# Untranslated text: FILES TO SEND
+msgid "files-to-send"
+msgstr "FILES TO SEND"
+
+# Untranslated text: Start up in admin mode.
+msgid "admin-desc"
+msgstr "Start up in admin mode."
+
+# Untranslated text: Append debug information to the given log file.
+msgid "appendlogfile-desc"
+msgstr "Append debug information to the given log file."
+
+# Untranslated text: LOGFILE
+msgid "appendlogfile-arg"
+msgstr "LOGFILE"
+
+# Untranslated text: Submits multiple faxes. The specified file (or stdin) should contain one set of valid command line options per line.
+msgid "batch-desc"
+msgstr "Submits multiple faxes. The specified file (or stdin) should contain one set of valid command line options per line."
+
+# Untranslated text: FILE
+msgid "batch-arg"
+msgstr "FILE"
+
+# Untranslated text: The format of the batch file. Currently only \"cmdline\" is supported.
+msgid "batch-format-desc"
+msgstr "The format of the batch file. Currently only \"cmdline\" is supported."
+
+# DO NOT translate!
+msgid "batch-format-arg"
+msgstr "cmdline"
+
+# Untranslated text: Sets the configuration directory to use instead of ~/.yajhfc
+msgid "configdir-desc"
+msgstr "Sets the configuration directory to use instead of ~/.yajhfc"
+
+# Untranslated text: DIRECTORY
+msgid "configdir-arg"
+msgstr "DIRECTORY"
+
+# Untranslated text: Output some debugging information.
+msgid "debug-desc"
+msgstr "Output some debugging information."
+
+# Untranslated text: Displays this text.
+msgid "help-desc"
+msgstr "Displays this text (formatted for COLUMNS columns if given)."
+
+# Untranslated text: COLUMNS
+msgid "help-arg"
+msgstr "COLUMNS"
+
+# Untranslated text: Specifies the location of a JDBC driver JAR file to load.
+msgid "loaddriver-desc"
+msgstr "Specifies the location of a JDBC driver JAR file to load."
+
+# Untranslated text: JARFILE
+msgid "loaddriver-arg"
+msgstr "JARFILE"
+
+# Untranslated text: Specifies a jar file of a YajHFC plugin to load.
+msgid "loadplugin-desc"
+msgstr "Specifies a jar file of a YajHFC plugin to load."
+
+# Untranslated text: JARFILE
+msgid "loadplugin-arg"
+msgstr "JARFILE"
+
+# Untranslated text: The log file to log debug information to (if not specified, use stdout).
+msgid "logfile-desc"
+msgstr "The log file to log debug information to (if not specified, use stdout)."
+
+# Untranslated text: LOGFILE
+msgid "logfile-arg"
+msgstr "LOGFILE"
+
+# Untranslated text: Suppresses the check for the Java version at startup.
+msgid "no-check-desc"
+msgstr "Suppresses the check for the Java version at startup."
+
+# Untranslated text: Disables loading plugins from the plugin.lst file.
+msgid "no-plugins-desc"
+msgstr "Disables loading plugins from the plugin.lst file."
+
+# Untranslated text: Overrides the value of the specified setting for this session. The overridden setting is not saved.
+msgid "override-setting-desc"
+msgstr "Overrides the value of the specified setting for this session. The overridden setting is not saved."
+
+# Untranslated text: KEY=VALUE
+msgid "override-setting-arg"
+msgstr "KEY=VALUE"
+
+# Untranslated text: Prints the job IDs of newly sent faxes to stdout or to the specified file. One job per line is printed, in the format \"yyyy-mm-dd hh:mm:ss NEW_FAXJOB jobid\".
+msgid "print-jobids-desc"
+msgstr "Prints the job IDs of newly sent faxes to stdout or to the specified file. One job per line is printed, in the format \"yyyy-mm-dd hh:mm:ss NEW_FAXJOB jobid\"."
+
+# Untranslated text: FILE
+msgid "print-jobids-arg"
+msgstr "FILE"
+
+# Untranslated text: Print less messages. You can specify this multiple times to be more quiet.
+msgid "quiet-desc"
+msgstr "Print less messages. You can specify this multiple times to be more quiet."
+
+# Untranslated text: Read the file to send from standard input.
+msgid "stdin-desc"
+msgstr "Read the file to send from standard input."
+
+# Untranslated text: Print more messages. You can specify this multiple times to be more verbose.
+msgid "verbose-desc"
+msgstr "Print more messages. You can specify this multiple times to be more verbose."
+
+# Untranslated text: Set the HylaFAX \"archive\" flag for this job.
+msgid "archive-job-desc"
+msgstr "Set the HylaFAX \"archive\" flag for this job."
+
+# DO NOT translate!
+msgid "archive-job-arg"
+msgstr "yes|no"
+
+# Untranslated text: The comment for the cover page.
+msgid "comment-desc"
+msgstr "The comment for the cover page."
+
+# Untranslated text: COMMENT
+msgid "comment-arg"
+msgstr "COMMENT"
+
+# Untranslated text: Use a cover page for sending a fax.
+msgid "custom-cover-desc"
+msgstr "The path to the cover page template to use for this fax job."
+
+# Untranslated text: FILE
+msgid "custom-cover-arg"
+msgstr "FILE"
+
+# Untranslated text: Sets a custom HylaFAX property (JPARM) for this fax job. To set multiple properties, specify this multiple times.
+msgid "custom-property-desc"
+msgstr "Sets a custom HylaFAX property (JPARM) for this fax job. To set multiple properties, specify this multiple times."
+
+# Untranslated text: KEY=VALUE
+msgid "custom-property-arg"
+msgstr "KEY=VALUE"
+
+# Untranslated text: Sets the sender identity to use when sending the fax. Specify either the identity's name (e.g. \"My identity\"), the identity's list index (0 is the first element) or the ID in the form \"#ID\".
+msgid "identity-desc"
+msgstr "Sets the sender identity to use when sending the fax. Specify either the identity's name (e.g. \"My identity\"), the identity's list index (0 is the first element) or the ID in the form \"#ID\"."
+
+# Untranslated text: IDENTITY
+msgid "identity-arg"
+msgstr "IDENTITY"
+
+# Untranslated text: The time to \"kill\" the fax job after if it has not been sent successfully until that point of time. You can specify the time in the following formats: \"+n days|hours|minutes|seconds\" or \"yyyy-MM-dd hh:mm:ss\" or your locale's default short date format.
+msgid "kill-time-desc"
+msgstr "The time to \"kill\" the fax job after if it has not been sent successfully until that point of time. You can specify the time in the following formats: \"+n days|hours|minutes|seconds\" or \"yyyy-MM-dd hh:mm:ss\" or your locale's default short date format."
+
+# Untranslated text: TIMESPEC
+msgid "kill-time-arg"
+msgstr "TIMESPEC"
+
+# Untranslated text: The maximum number of attempts in delivering the fax HylaFAX will perform.
+msgid "max-tries-desc"
+msgstr "The maximum number of attempts in delivering the fax HylaFAX will perform."
+
+# Untranslated text: TRIES
+msgid "max-tries-arg"
+msgstr "TRIES"
+
+# Untranslated text: The type of mail status notification for this fax job done by HylaFAX.
+msgid "notification-desc"
+msgstr "The type of mail status notification for this fax job done by HylaFAX."
+
+# DO NOT translate!
+msgid "notification-arg"
+msgstr "none|done|requeued|done+requeued"
+
+# Untranslated text: Sets the modem to send the fax. Specify either the modem's name (e.g. ttyS0) or \"any\" to use any modem.
+msgid "modem-desc"
+msgstr "Sets the modem to send the fax. Specify either the modem's name (e.g. ttyS0) or \"any\" to use any modem."
+
+# Untranslated text: MODEM
+msgid "modem-arg"
+msgstr "MODEM"
+
+# Untranslated text: The paper size to use for sending the fax.
+msgid "paper-size-desc"
+msgstr "The paper size to use for sending the fax."
+
+# DO NOT translate!
+msgid "paper-size-arg"
+msgstr "a4|a5|legal|letter"
+
+# Untranslated text: Poll the recipient for faxes instead of sending one to it
+msgid "poll-desc"
+msgstr "Poll the recipient for faxes instead of sending one to it."
+
+# Untranslated text: Querys the status of the fax job identified by the given ID. You can specify this parameter multiple times to query the status of multiple jobs.
+msgid "query-job-status-desc"
+msgstr "Querys the status of the fax job identified by the given ID. You can specify this parameter multiple times to query the status of multiple jobs."
+
+# DO NOT translate!
+msgid "query-job-status-arg"
+msgstr "JOBID"
+
+# Untranslated text: In addition to the status, query HylaFAX for additional fax job properties (\"JPARMs\"). You can specify this argument multiple times to query multiple additional properties.
+msgid "query-property-desc"
+msgstr "In addition to the status, query HylaFAX for additional fax job properties (\"JPARMs\"). You can specify this argument multiple times to query multiple additional properties."
+
+# DO NOT translate!
+msgid "query-property-arg"
+msgstr "PROPERTYNAME"
+
+# Untranslated text: Specifies a recipient to send the fax to. You may specify either a fax number or detailed cover page information (see the FAQ for the format in the latter case). You may specify --recipient multiple times for multiple recipients.
+msgid "recipient-desc"
+msgstr "Specifies a recipient to send the fax to. You may specify either a fax number or detailed cover page information (see the FAQ for the format in the latter case). You may specify --recipient multiple times for multiple recipients."
+
+# Untranslated text: RECIPIENT
+msgid "recipient-arg"
+msgstr "RECIPIENT"
+
+# Untranslated text: The resolution to use for sending the fax.
+msgid "resolution-desc"
+msgstr "The resolution to use for sending the fax."
+
+# DO NOT translate!
+msgid "resolution-arg"
+msgstr "low|high|extended"
+
+# Untranslated text: The point of time when the first attempt to send the fax will be made. You can specify the time in the following formats: \"now\" or \"+n days|hours|minutes|seconds\" or \"yyyy-MM-dd hh:mm:ss\" or your locale's default short date format.
+msgid "send-time-desc"
+msgstr "The point of time when the first attempt to send the fax will be made. You can specify the time in the following formats: \"now\" or \"+n days|hours|minutes|seconds\" or \"yyyy-MM-dd hh:mm:ss\" or your locale's default short date format."
+
+# Untranslated text: TIMESPEC
+msgid "send-time-arg"
+msgstr "TIMESPEC"
+
+# Untranslated text: Sets the server to send the fax. Specify either the server's name (e.g. \"My server\"), the server's list index (0 is the first element) or the ID in the form \"#ID\".
+msgid "server-desc"
+msgstr "Sets the server to send the fax over. Specify either the server's name (e.g. \"My server\"), the server's list index (0 is the first element) or the ID in the form \"#ID\"."
+
+# Untranslated text: SERVER
+msgid "server-arg"
+msgstr "SERVER"
+
+# Untranslated text: The fax subject for the cover page.
+msgid "subject-desc"
+msgstr "The fax subject for the cover page."
+
+# Untranslated text: SUBJECT
+msgid "subject-arg"
+msgstr "SUBJECT"
+
+# Untranslated text: Use a cover page for sending a fax.
+msgid "use-cover-desc"
+msgstr "Use a cover page for sending a fax."
+
+# DO NOT translate!
+msgid "use-cover-arg"
+msgstr "yes|no"
+
+
