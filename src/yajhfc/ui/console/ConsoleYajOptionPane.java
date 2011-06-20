@@ -3,7 +3,7 @@
  */
 package yajhfc.ui.console;
 
-import static yajhfc.Utils._;
+import static yajhfc.console.i18n.Msgs._;
 
 import javax.swing.JOptionPane;
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-18 18:54+0200\n"
+"POT-Creation-Date: 2011-06-20 14:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,81 +17,104 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/yajhfc/console/ConsCommandLineOpts.java:393
+#: ../src/yajhfc/console/ConsCommandLineOpts.java:410
 #, java-format
-msgid "Invalid number \"{0}\" specified for argument {1}."
+msgid "The value \"{0}\" specified for argument {1} is not a number."
 msgstr ""
 
-#: ../src/yajhfc/console/ConsCommandLineOpts.java:477
+#: ../src/yajhfc/console/ConsCommandLineOpts.java:494
 #, java-format
-msgid "Invalid date \"{0}\" specified for argument {1}."
+msgid ""
+"The value \"{0}\" specified for argument {1} is not a recognized date/time "
+"value."
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:73
+#: ../src/yajhfc/console/Main.java:75 ../src/yajhfc/console/Main.java:80
+msgid "Invalid command line arguments:"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:75
 msgid "You cannot specify both --stdin and use batch input from stdin."
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:86
-msgid "You cannot specify poll mode and have documents to send."
-msgstr ""
-
-#: ../src/yajhfc/console/Main.java:90
-msgid "You cannot specify poll mode and query job status."
-msgstr ""
-
-#: ../src/yajhfc/console/Main.java:95
+#: ../src/yajhfc/console/Main.java:88
 msgid "You cannot both query a job status and specify documents to send."
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:99
+#: ../src/yajhfc/console/Main.java:92
 msgid "You cannot both query a job status and specify recipients."
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:104
-msgid "You have to specify at least one recipient or poll or query job status."
+#: ../src/yajhfc/console/Main.java:97
+msgid ""
+"You have to specify at least one recipient or query a job status or use "
+"batch mode."
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:142
-msgid "Unsupported batch data format: "
+#: ../src/yajhfc/console/Main.java:102
+msgid "You cannot specify poll mode and have documents to send."
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:170
-msgid "Invalid data specified"
+#: ../src/yajhfc/console/Main.java:141
+msgid "Unsupported batch data format"
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:176
+#: ../src/yajhfc/console/Main.java:168 ../src/yajhfc/console/Main.java:171
+msgid "Line"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:168
+msgid "Invalid arguments specified in batch mode:"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:171
+msgid "data was"
+msgstr ""
+
+#: ../src/yajhfc/console/Main.java:177
 #, java-format
 msgid "Error processing the batch data from \"{0}\":"
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:208
-msgid "Error sending the fax:"
+#: ../src/yajhfc/console/Main.java:207
+msgid "Error performing the requested operation:"
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:225
-msgid "Sending a fax failed, bailing out."
+#: ../src/yajhfc/console/Main.java:224
+msgid "Sending a fax failed, exiting program."
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:258
+#: ../src/yajhfc/console/Main.java:257
 msgid "Invalid custom property"
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:272
-msgid "The kill time must be in the future!"
+#: ../src/yajhfc/console/Main.java:271
+msgid "The kill time must be in the future; using default instead."
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:294
-msgid "Invalid notification type"
+#: ../src/yajhfc/console/Main.java:293
+#, java-format
+msgid "Invalid notification type {0}, using default instead."
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:306
-msgid "Invalid paper size"
+#: ../src/yajhfc/console/Main.java:305
+#, java-format
+msgid "Invalid paper size {0}, using default instead"
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:326
-msgid "Invalid fax resolution"
+#: ../src/yajhfc/console/Main.java:325
+#, java-format
+msgid "Invalid fax resolution {0}, using default instead"
 msgstr ""
 
-#: ../src/yajhfc/console/Main.java:346
-msgid "Invalid data specified, bailing out..."
+#: ../src/yajhfc/console/Main.java:345
+msgid "Invalid data specified for fax, exiting program."
+msgstr ""
+
+#: ../src/yajhfc/ui/console/ConsoleYajOptionPane.java:62
+msgid "User name"
+msgstr ""
+
+#: ../src/yajhfc/ui/console/ConsoleYajOptionPane.java:72
+msgid "Password for user %s"
 msgstr ""
