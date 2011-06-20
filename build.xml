@@ -132,4 +132,14 @@
 		<delete dir="${build}"/>
 		<delete file="${jar-output}"/>
 	</target>
+	
+	<target name="upload-dist" depends="dist" description="upload developer version to ftp.berlios.de">
+		<exec dir="${src}" executable="scp">
+			<arg value="${binzip-output}"/>
+			<arg value="jwolz@shell.berlios.de:/home/groups/ftp/pub/yajhfc/temp/"/>
+		</exec>
+		<echo>
+Uploaded yajhfc-console.zip to ftp://ftp.berlios.de/pub/yajhfc/temp/yajhfc-console.zip
+		</echo>
+	</target>
 </project>

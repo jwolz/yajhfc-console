@@ -42,6 +42,8 @@ import yajhfc.ui.console.ConsoleIO;
 import yajhfc.ui.console.ConsoleProgressUI;
 import yajhfc.util.ExternalProcessExecutor;
 
+import static yajhfc.console.i18n.Msgs._;
+
 /**
  * @author jonas
  *
@@ -57,10 +59,6 @@ public class Main {
     public static final int EXIT_CODE_SEND_FAX_FAILED = 3;
     public static final int EXIT_CODE_WRONG_BATCH_DATA = 4;
     
-    static String _(String key) {
-    	return key;
-    }
-    
     public static void printError(String text) {
         printError(ConsoleIO.VERBOSITY_ERROR, text);
     }
@@ -74,34 +72,34 @@ public class Main {
     
     private static boolean validateCommandLineOpts(ConsCommandLineOpts opts) {
         if (opts.stdin && "-".equals(opts.batchInput)) {
-            printError(_("You cannot specify both --stdin and use batch input from stdin."));
+            printError(_("Invalid command line arguments:") + " " + _("You cannot specify both --stdin and use batch input from stdin."));
             return false;
         }
         
         if (!opts.isBatch() || opts.isSendAction())
-        	return validatePerJobCommandLineOpts(opts);
+        	return validatePerJobCommandLineOpts(opts, _("Invalid command line arguments:"));
         else 
         	return true;
     }
 
-    private static boolean validatePerJobCommandLineOpts(ConsCommandLineOpts opts) {
+    private static boolean validatePerJobCommandLineOpts(ConsCommandLineOpts opts, String caption) {
         if (opts.queryJobStatus.size() > 0) {
             if (opts.fileNames.size() > 0 || opts.stdin) {
-                printError(_("You cannot both query a job status and specify documents to send."));
+                printError(caption + " " + _("You cannot both query a job status and specify documents to send."));
                 return false;
             }
             if (opts.recipients.size() > 0) {
-                printError(_("You cannot both query a job status and specify recipients."));
+                printError(caption + " " + _("You cannot both query a job status and specify recipients."));
                 return false;
             }
         } else {
             if (opts.recipients.size() == 0) {
-                printError(_("You have to specify at least one recipient or query job status."));
+                printError(caption + " " + _("You have to specify at least one recipient or query a job status or use batch mode."));
                 return false;
             }
             if (opts.poll) {
                 if (opts.fileNames.size() > 0 || opts.stdin) {
-                    printError(_("You cannot specify poll mode and have documents to send."));
+                    printError(caption + " " +  _("You cannot specify poll mode and have documents to send."));
                     return false;
                 }
             } 
@@ -140,7 +138,7 @@ public class Main {
     	if ("cmdline".equalsIgnoreCase(opts.batchFormat)) {
     		processBatchCmdLineFmt(opts);
     	} else {
-    		System.err.println(_("Unsupported batch data format: ") + opts.batchFormat);
+    		System.err.println(_("Unsupported batch data format") + ": " + opts.batchFormat);
     		System.exit(EXIT_CODE_WRONG_PARAMETERS);
     	}
     }
@@ -156,7 +154,9 @@ public class Main {
 			BufferedReader r = new BufferedReader(new InputStreamReader(inStream));
 			String line;
 			String[] dummy = new String[0];
+			int lineNum = 0;
 			while ((line = r.readLine()) != null) {
+			    lineNum++;
 				line = line.trim();
 				if (line.length() == 0 || line.startsWith("#"))
 					continue;
@@ -165,10 +165,10 @@ public class Main {
 				ConsCommandLineOpts jobOpts = new ConsCommandLineOpts();
 				jobOpts.parse(args, true);
 				
-				if (validatePerJobCommandLineOpts(jobOpts)) {
+				if (validatePerJobCommandLineOpts(jobOpts, _("Line") + " " + lineNum + ": " + _("Invalid arguments specified in batch mode:"))) {
 					processCommandLineForJob(jobOpts);
 				} else {
-					printError(_("Invalid data specified") + ": " + line);
+					printError( _("Line") + " " + lineNum + " " + _("data was") + ": " + line);
 					System.exit(EXIT_CODE_WRONG_BATCH_DATA);
 				}
 			}
@@ -268,7 +268,7 @@ public class Main {
         if (opts.killTime != null) {
             long delayMillis = opts.killTime.getTime() - System.currentTimeMillis();
             if (delayMillis <= 0) {
-                printError(_("The kill time must be in the future!"));
+                printError(_("The kill time must be in the future; using default instead."));
             } else {
                 sendController.setKillTime((int)(delayMillis / (1000*60)));
             }
@@ -290,7 +290,7 @@ public class Main {
                 if ("DONE+REQUEUE".equals(n)) {
                     sendController.setNotificationType(FaxNotification.DONE_AND_REQUEUE);
                 } else {
-                    printError(_("Invalid notification type") + ": " + n);
+                    printError(MessageFormat.format(_("Invalid notification type {0}, using default instead."), n));
                 }
             }
         }
@@ -302,7 +302,7 @@ public class Main {
                 if (Utils.debugMode) {
                     log.log(Level.WARNING, "Invalid paper size", e);
                 }
-                printError(_("Invalid paper size") + ": " + opts.paperSize);
+                printError(MessageFormat.format(_("Invalid paper size {0}, using default instead"), opts.paperSize));
             }
         }
         
@@ -322,7 +322,7 @@ public class Main {
                 } else if ("196".equals(r)) {
                     sendController.setResolution(FaxResolution.HIGH);
                 } else {
-                    printError(_("Invalid fax resolution") + ": " + r);
+                    printError(MessageFormat.format(_("Invalid fax resolution {0}, using default instead"), r));
                 }
             }
         }
@@ -342,7 +342,7 @@ public class Main {
 				System.exit(EXIT_CODE_GENERAL_FAILURE);
 			}
         } else {
-        	printError(_("Invalid data specified, exiting program."));
+        	printError(_("Invalid data specified for fax, exiting program."));
         	System.exit(EXIT_CODE_WRONG_PARAMETERS);
         }
     }
