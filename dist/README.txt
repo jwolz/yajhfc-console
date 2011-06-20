@@ -3,7 +3,7 @@ YajHFC for console
 
 Quick start:
 - Copy the contents of this archive to a folder convenient for you
-- Invoke cyajhfc.sh for UNIX or cyajhfc.cmd for Windows to start the application
+- Invoke cyajhfc.sh for UNIX or cyajhfc.exe for Windows to start the application (please note that both jar files must be in the same directory as the sh/exe file)
 
 Invocation:
 cyajhfc [OPTIONS]... [FILES TO SEND]...

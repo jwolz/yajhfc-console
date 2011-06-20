@@ -61,16 +61,20 @@ public class Main {
     	return key;
     }
     
-    private static void printValidationError(String text) {
-        System.err.println(text);
+    public static void printError(String text) {
+        printError(ConsoleIO.VERBOSITY_ERROR, text);
+    }
+    
+    public static void printError(int priority, String text) {
+        ConsoleIO.getDefault().println(priority, text);
         if (Utils.debugMode) {
-            log.warning("Invalid command line option specified: " + text);
+            log.info("Error (prio " + priority + "): " + text);
         }
     }
     
     private static boolean validateCommandLineOpts(ConsCommandLineOpts opts) {
         if (opts.stdin && "-".equals(opts.batchInput)) {
-            printValidationError(_("You cannot specify both --stdin and use batch input from stdin."));
+            printError(_("You cannot specify both --stdin and use batch input from stdin."));
             return false;
         }
         
@@ -83,21 +87,21 @@ public class Main {
     private static boolean validatePerJobCommandLineOpts(ConsCommandLineOpts opts) {
         if (opts.queryJobStatus.size() > 0) {
             if (opts.fileNames.size() > 0 || opts.stdin) {
-                printValidationError(_("You cannot both query a job status and specify documents to send."));
+                printError(_("You cannot both query a job status and specify documents to send."));
                 return false;
             }
             if (opts.recipients.size() > 0) {
-                printValidationError(_("You cannot both query a job status and specify recipients."));
+                printError(_("You cannot both query a job status and specify recipients."));
                 return false;
             }
         } else {
             if (opts.recipients.size() == 0) {
-                printValidationError(_("You have to specify at least one recipient or query job status."));
+                printError(_("You have to specify at least one recipient or query job status."));
                 return false;
             }
             if (opts.poll) {
                 if (opts.fileNames.size() > 0 || opts.stdin) {
-                    printValidationError(_("You cannot specify poll mode and have documents to send."));
+                    printError(_("You cannot specify poll mode and have documents to send."));
                     return false;
                 }
             } 
@@ -118,7 +122,7 @@ public class Main {
         Launcher2.application = new ConsoleMainFrame();
         ConsoleIO.getDefault().setVerbosity(opts.verbosity);
         
-        PluginManager.initializeAllKnownPlugins(PluginManager.STARTUP_MODE_NO_GUI); // TODO: Startup mode constant?
+        PluginManager.initializeAllKnownPlugins(PluginManager.STARTUP_MODE_CONSOLE); 
 
         if (!validateCommandLineOpts(opts)) {
             System.exit(EXIT_CODE_WRONG_PARAMETERS);
@@ -164,15 +168,13 @@ public class Main {
 				if (validatePerJobCommandLineOpts(jobOpts)) {
 					processCommandLineForJob(jobOpts);
 				} else {
-					printValidationError(_("Invalid data specified") + ": " + line);
+					printError(_("Invalid data specified") + ": " + line);
 					System.exit(EXIT_CODE_WRONG_BATCH_DATA);
 				}
 			}
 			r.close();
 		} catch (IOException e) {
-			System.err.println(MessageFormat.format(_("Error processing the batch data from \"{0}\":"), opts.batchInput));
-			e.printStackTrace();
-			log.log(Level.SEVERE, "Error processing the batch data from " + opts.batchInput, e);
+			Launcher2.application.getDialogUI().showExceptionDialog(MessageFormat.format(_("Error processing the batch data from \"{0}\":"), opts.batchInput), e);
 		}
     }
 
@@ -202,7 +204,7 @@ public class Main {
                 sendFax(server, opts);
             }
         } catch (Exception ex) {
-            dialogs.showExceptionDialog(_("Error sending the fax:"), ex);
+            dialogs.showExceptionDialog(_("Error performing the requested operation:"), ex);
             System.exit(EXIT_CODE_SEND_FAX_FAILED);
         }
     }
@@ -219,7 +221,7 @@ public class Main {
         	   if (success) {
         		   faxLock.release();
         	   } else {
-                   ConsoleIO.getDefault().println(ConsoleIO.VERBOSITY_NORMAL, _("Sending a fax failed, bailing out."));
+                   printError(_("Sending a fax failed, exiting program."));
                    System.exit(EXIT_CODE_SEND_FAX_FAILED);
         	   }
            } 
@@ -252,7 +254,7 @@ public class Main {
             for (String prop : opts.customProperties) {
                 int pos = prop.indexOf('=');
                 if (pos <= 0) {
-                    printValidationError(_("Invalid custom property") + ": " + prop);
+                    printError(_("Invalid custom property") + ": " + prop);
                 } else {
                     sendController.getCustomProperties().put(prop.substring(0, pos), prop.substring(pos+1));
                 }
@@ -266,7 +268,7 @@ public class Main {
         if (opts.killTime != null) {
             long delayMillis = opts.killTime.getTime() - System.currentTimeMillis();
             if (delayMillis <= 0) {
-                printValidationError(_("The kill time must be in the future!"));
+                printError(_("The kill time must be in the future!"));
             } else {
                 sendController.setKillTime((int)(delayMillis / (1000*60)));
             }
@@ -288,7 +290,7 @@ public class Main {
                 if ("DONE+REQUEUE".equals(n)) {
                     sendController.setNotificationType(FaxNotification.DONE_AND_REQUEUE);
                 } else {
-                    printValidationError(_("Invalid notification type") + ": " + n);
+                    printError(_("Invalid notification type") + ": " + n);
                 }
             }
         }
@@ -300,7 +302,7 @@ public class Main {
                 if (Utils.debugMode) {
                     log.log(Level.WARNING, "Invalid paper size", e);
                 }
-                printValidationError(_("Invalid paper size") + ": " + opts.paperSize);
+                printError(_("Invalid paper size") + ": " + opts.paperSize);
             }
         }
         
@@ -320,7 +322,7 @@ public class Main {
                 } else if ("196".equals(r)) {
                     sendController.setResolution(FaxResolution.HIGH);
                 } else {
-                    printValidationError(_("Invalid fax resolution") + ": " + r);
+                    printError(_("Invalid fax resolution") + ": " + r);
                 }
             }
         }
@@ -340,7 +342,7 @@ public class Main {
 				System.exit(EXIT_CODE_GENERAL_FAILURE);
 			}
         } else {
-        	printValidationError(_("Invalid data specified, bailing out..."));
+        	printError(_("Invalid data specified, exiting program."));
         	System.exit(EXIT_CODE_WRONG_PARAMETERS);
         }
     }

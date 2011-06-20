@@ -18,7 +18,10 @@
 	<property name="srczip-output" location="${build}/yajhfc-console-src.zip"/>
 	<property name="binzip-output" location="${build}/yajhfc-console.zip"/>
 
-
+	<property name="exewrapper.config" location="${src}/launch4j.cfg.xml"/>
+	<property name="exewrapper.target" location="${build}/cyajhfc.exe"/>
+	<property name="launch4j.dir" location="/opt/launch4j" />
+	
 	<target name="init">
 	
 		<fail message="YajHFC jar not found. Edit build.properties to specify the correct location.">
@@ -39,6 +42,11 @@
 				<mapper type="glob" from="CommandLine*.po" to="${i18n-bin}/yajhfc/console/i18n/CommandLine*.properties" />
 			</compositemapper>
 		</uptodate>
+
+		<!-- Find out if we need to recompile the exe wrapper -->
+	    <uptodate property="exewrapper.isUpToDate"
+		            srcfile="${exewrapper.config}"
+		            targetfile="${build}/cyajhfc.exe"/>
 
 
 		<!-- Create the time stamp -->
@@ -74,8 +82,16 @@
 		</javac>
 	</target>
 
-
-	<target name="dist" depends="compile,i18n" description="generate the distribution" >
+	<target name="exewrapper" depends="init" description="generate the exe wrapper for Windows" unless="exewrapper.isUpToDate">
+		<taskdef name="launch4j"
+		    classname="net.sf.launch4j.ant.Launch4jTask"
+		    classpath="${launch4j.dir}/launch4j.jar
+		        :${launch4j.dir}/lib/xstream.jar" />
+		
+		<launch4j configFile="${exewrapper.config}" outfile="${exewrapper.target}" />
+	</target>
+	
+	<target name="dist" depends="compile,i18n,exewrapper" description="generate the distribution" >		
 		<jar jarfile="${jar-output}" manifest="${src}/MANIFEST.MF">
 			<fileset dir="${build}" includes="yajhfc/**,org/**,de/**"/>
 			<fileset dir="${jar-extra}" />
@@ -84,7 +100,7 @@
 		</jar>
 
 		<zip destfile="${binzip-output}">
-			<zipfileset dir="${build}" includes="*.jar" />
+			<zipfileset dir="${build}" includes="*.jar,*.exe" />
 			<zipfileset dir="${dist-extra}" excludes="**/*.sh"/>
 			<zipfileset dir="${dist-extra}" includes="**/*.sh" filemode="0755"/>
 			<zipfileset file="${yajhfc-jar}"/>

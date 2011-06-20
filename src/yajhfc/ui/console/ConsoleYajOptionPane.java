@@ -3,6 +3,8 @@
  */
 package yajhfc.ui.console;
 
+import static yajhfc.Utils._;
+
 import javax.swing.JOptionPane;
 
 import yajhfc.ui.YajOptionPane;
@@ -25,7 +27,7 @@ public class ConsoleYajOptionPane extends YajOptionPane {
     public void showExceptionDialog(String title, String message, Exception exc) {
         ConsoleIO cons = ConsoleIO.getDefault();
         printMessage(cons, ConsoleIO.VERBOSITY_ERROR, title, message);
-        exc.printStackTrace(cons.writer());
+        exc.printStackTrace(cons.errWriter());
     }
 
     /* (non-Javadoc)
@@ -57,7 +59,7 @@ public class ConsoleYajOptionPane extends YajOptionPane {
         
         printMessage(cons, ConsoleIO.VERBOSITY_USERPROMPT, title, prompt);
         if (editableUsername) {
-            user = cons.readLine("User name [%s]: ", userName);
+            user = cons.readLine(_("User name") + " [%s]: ", userName);
             if (user == null)
                 return null;
             
@@ -67,7 +69,7 @@ public class ConsoleYajOptionPane extends YajOptionPane {
         }
         String pass = null;
         do {
-            pass = cons.readPassword("Password for user %s: ", user);
+            pass = cons.readPassword(_("Password for user %s") + ": ", user);
             if (pass == null)
                 return null;
         } while (!allowEmptyPassword && pass.length() == 0);
