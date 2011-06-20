@@ -6,8 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 public class StreamConsoleIO extends ConsoleIO {
-    protected PrintWriter writer;
-    protected BufferedReader reader;
+    protected final PrintWriter writer;
+    protected final PrintWriter errWriter;
+    protected final BufferedReader reader;
     
     @Override
     public void printfImpl(String format, Object[] args) {
@@ -36,16 +37,22 @@ public class StreamConsoleIO extends ConsoleIO {
 
     @Override
     public void printImpl(String text) {
-        writer.print(text);
+        errWriter.print(text);
     }
     
     @Override
     public void printlnImpl(String text) {
-        writer.println(text);
+        errWriter.println(text);
+    }
+    
+    @Override
+    public PrintWriter errWriter() {
+        return errWriter;
     }
     
     public StreamConsoleIO() {
         writer = new PrintWriter(System.out, true);
+        errWriter = new PrintWriter(System.err, true);
         reader = new BufferedReader(new InputStreamReader(System.in));
     }
 }

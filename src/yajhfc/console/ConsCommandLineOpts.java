@@ -29,6 +29,9 @@ import yajhfc.plugin.PluginType;
 import yajhfc.ui.console.ConsoleIO;
 
 public class ConsCommandLineOpts extends CommonCommandLineOpts {
+    
+    private static final String CMDLINE_NAME = "cyajhfc";
+    
     /**
      * Files to submit. 
      */
@@ -222,7 +225,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
         }
         final String[] argsWork = args.clone();
         
-        Getopt getopt = new Getopt("cyajhfc", argsWork, shortOpts, longOpts);
+        Getopt getopt = new Getopt(CMDLINE_NAME, argsWork, shortOpts, longOpts);
         int opt;
         String optarg;
         while ((opt = getopt.getopt()) != -1) {
@@ -268,7 +271,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
                 debugMode = true;
                 break;
             case 'h': // help 
-                new HelpPrinter("yajhfc.console.i18n.CommandLineOpts").printHelp(Launcher2.getConsoleWriter(), sortLongOpts(longOpts), getopt.getOptarg(), "cyajhfc");
+                new HelpPrinter("yajhfc.console.i18n.CommandLineOpts").printHelp(Launcher2.getConsoleWriter(), sortLongOpts(longOpts), getopt.getOptarg(), CMDLINE_NAME);
                 System.exit(0);
                 break;
             case 3: // loaddriver
@@ -414,7 +417,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
         if ("now".equalsIgnoreCase(optarg)) {
             return new Date();
         } else {
-            Pattern delayPattern = Pattern.compile("([+-])?\\s*(\\d+)\\s*((?:min?(?:ute)?s?)|(?:s(?:ec(?:ond)?s?)?)|(?:h(?:our)?s?)|(?:d(?:ay)?s?))", Pattern.CASE_INSENSITIVE);
+            Pattern delayPattern = Pattern.compile("([+-])?\\s*(\\d+)\\s*((?:mi?n?(?:ute)?s?)|(?:s(?:ec(?:ond)?s?)?)|(?:h(?:our)?s?)|(?:d(?:ay)?s?))", Pattern.CASE_INSENSITIVE);
             Matcher m = delayPattern.matcher(optarg);
             if (m.matches()) {
                 String sPlusMinus = m.group(1);
@@ -517,13 +520,15 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     	return (poll || recipients.size() > 0 || queryJobStatus.size() > 0);
     }
     
-    public static LongOpt[] sortLongOpts(LongOpt[] in) {
+    static LongOpt[] sortLongOpts(LongOpt[] in) {
         LongOpt[] rv = in.clone();
         Arrays.sort(rv, new Comparator<LongOpt>() {
             @Override
             public int compare(LongOpt o1, LongOpt o2) {
                 String n1 = o1.getName();
                 String n2 = o2.getName();
+                
+                // Move options starting with X to the end
                 if ( n1.startsWith("X") && !n2.startsWith("X")) {
                     return 1;
                 }

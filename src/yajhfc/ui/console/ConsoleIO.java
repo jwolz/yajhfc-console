@@ -87,7 +87,17 @@ public abstract class ConsoleIO {
 
     public abstract String readPassword(String fmt, Object... args);
 
+    /**
+     * Returns a PrintWriter writing to stdout
+     * @return
+     */
     public abstract PrintWriter writer();
+    
+    /**
+     * Returns a PrintWriter writing to stderr
+     * @return
+     */
+    public abstract PrintWriter errWriter();
     
     public int getVerbosity() {
         return verbosity;
@@ -96,6 +106,12 @@ public abstract class ConsoleIO {
     public void setVerbosity(int verbosity) {
         this.verbosity = verbosity;
     }
+    /**
+     * Prints the given formatted string to stderr 
+     * @param priority
+     * @param format
+     * @param args
+     */
     public void printf(int priority, String format, Object... args) {
         if (Utils.debugMode)
             log.fine("printf(" + priority + ", " + format + ", " + Arrays.toString(args) + ")");
@@ -103,6 +119,12 @@ public abstract class ConsoleIO {
             printfImpl(format, args);
     }
     
+    /**
+     * Prints the given string to stderr 
+     * @param priority
+     * @param format
+     * @param args
+     */
     public void print(int priority, String text) {
         if (Utils.debugMode)
             log.fine("print(" + priority + ", " + text + ")");
@@ -110,6 +132,12 @@ public abstract class ConsoleIO {
             printImpl(text);
     }
     
+    /**
+     * Prints the given string to stderr 
+     * @param priority
+     * @param format
+     * @param args
+     */
     public void println(int priority, String text) {
         if (Utils.debugMode)
             log.fine("println(" + priority + ", " + text + ")");
