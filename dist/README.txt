@@ -1,11 +1,50 @@
 YajHFC for console
 ==================
 
-Quick start:
+QUICK START
+-----------
+
 - Copy the contents of this archive to a folder convenient for you
 - Invoke cyajhfc.sh for UNIX or cyajhfc.exe for Windows to start the application (please note that both jar files must be in the same directory as the sh/exe file)
 
-Invocation:
+Configuration of the application must have been done using the graphical interface before (just start YajHFC or double click yajhfc.jar to do that). 
+
+EXAMPLES
+--------
+a) Send the document "fax.pdf" to the fax numbers 555 and 666:
+cyajhfc -r555 -r666 fax.pdf
+
+b) Send the document "fax.pdf" to "John Doe, Doe Street 5, Johnstown, fax number 12345" using a cover page with the subject "Test" and the comment "Hello John!":
+cyajhfc --use-cover --subject="Test" --comment="Hello John!" "--recipient=givenname:John;surname:Doe;street:Doe Street 5;location:Johnstown;faxnumber:12345" fax.pdf
+
+c) Query the status of jobs 123 and 125:
+cyajhfc --query-job-status=123 --query-job-status=125
+
+
+d) Doing all of the above in batch mode:
+
+1. Create a file named batch.txt with the following content:
+# -- begin batch.txt
+# Lines starting with # are treated as comments, empty lines are ignored
+
+# Send the document "fax.pdf" to the fax numbers 555 and 666:
+-r555 -r666 fax.pdf
+
+# Send the document "fax.pdf" to "John Doe, Doe Street 5, Johnstown, fax number 12345" using a cover page with the subject "Test" and the comment "Hello John!":
+--use-cover --subject="Test" --comment="Hello John!" "--recipient=givenname:John;surname:Doe;street:Doe Street 5;location:Johnstown;faxnumber:12345" fax.pdf
+
+# Query the status of jobs 123 and 125:
+--query-job-status=123 --query-job-status=125
+# -- end batch.txt
+
+2. Start cyajhfc:
+cyajhfc --batch=batch.txt
+
+
+SUPPORTED COMMAND LINE PARAMETERS
+---------------------------------
+
+Usage:
 cyajhfc [OPTIONS]... [FILES TO SEND]...
 
 Argument description:
@@ -58,3 +97,6 @@ Argument description:
 -s, --subject=SUBJECT                               The fax subject for the cover page. 
 -C, --use-cover[=yes|no]                            Use a cover page for sending a fax. 
 -v, --verbose                                       Print more messages. You can specify this multiple times to be more verbose. 
+
+
+
