@@ -136,6 +136,10 @@ msgstr "Read the file to send from standard input."
 msgid "verbose-desc"
 msgstr "Print more messages. You can specify this multiple times to be more verbose."
 
+# Untranslated text: Prints version information.
+msgid "version-desc"
+msgstr "Prints version information."
+
 # Untranslated text: Set the HylaFAX \"archive\" flag for this job.
 msgid "archive-job-desc"
 msgstr "Set the HylaFAX \"archive\" flag for this job."
