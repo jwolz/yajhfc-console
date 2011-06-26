@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import yajhfc.Utils;
 import yajhfc.launch.CommonCommandLineOpts;
 import yajhfc.launch.HelpPrinter;
 import yajhfc.launch.Launcher2;
@@ -176,7 +177,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     public Boolean useCover = null;
     
     
-    // max non-char-opt: 14
+    // max non-char-opt: 15
     final static LongOpt[] longOptsOnlyOnce = new LongOpt[] {
             new LongOpt("admin", LongOpt.NO_ARGUMENT, null, 'A'),
             new LongOpt("appendlogfile", LongOpt.REQUIRED_ARGUMENT, null, 1),
@@ -195,6 +196,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("quiet", LongOpt.NO_ARGUMENT, null, 'q'),
             new LongOpt("stdin", LongOpt.NO_ARGUMENT, null, 8),
             new LongOpt("verbose", LongOpt.NO_ARGUMENT, null, 'v'),
+            new LongOpt("version", LongOpt.NO_ARGUMENT, null, 15),
             new LongOpt("Xprint-manpage", LongOpt.NO_ARGUMENT, null, -3),
             new LongOpt("Xprint-po-template", LongOpt.OPTIONAL_ARGUMENT, null, -4),
     };
@@ -338,6 +340,10 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             case 'v': //verbose
                 if (verbosity > ConsoleIO.VERBOSITY_MIN)
                     verbosity -= ConsoleIO.VERBOSITY_STEP;
+                break;
+            case 15: //version
+            	printVersionInfo();
+                System.exit(0);
                 break;
             case 9: //archive-job
                 archiveJob = parseOptionalBoolean(getopt.getOptarg());
@@ -557,6 +563,17 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             }
         });
         return rv;
+    }
+    
+    public static void printVersionInfo() {
+    	PrintWriter out = ConsoleIO.getDefault().writer();
+    	out.println(Utils.AppShortName + " " + Utils.AppVersion);
+    	out.println(Utils.AppCopyright);
+    	out.println("For more information, please visit: " + Utils.HomepageURL);
+    	out.println();
+    	out.println("Java " + System.getProperty("java.version") + " (" + System.getProperty("java.vendor") + ')');
+    	out.println("     " + System.getProperty("java.runtime.name") + ' ' + System.getProperty("java.runtime.version"));
+    	out.println("     " + System.getProperty("java.vm.name"));
     }
     
     public ConsCommandLineOpts() {
