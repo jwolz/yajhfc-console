@@ -182,7 +182,8 @@ public class Main {
 				if (line.length() == 0 || line.startsWith("#"))
 					continue;
 				
-				String[] args = ExternalProcessExecutor.splitCommandLine(line, true).toArray(dummy);
+				String[] args = ExternalProcessExecutor.splitCommandLine(line, false).toArray(dummy);
+				stripQuotesFromArgs(args);
 				ConsCommandLineOpts jobOpts = new ConsCommandLineOpts();
 				jobOpts.parse(args, true);
 				
@@ -197,6 +198,39 @@ public class Main {
 		} catch (IOException e) {
 			Launcher2.application.getDialogUI().showExceptionDialog(MessageFormat.format(_("Error processing the batch data from \"{0}\":"), opts.batchInput), e);
 		}
+    }
+    
+    public static void stripQuotesFromArgs(final String[] args) {
+    	StringBuilder buf = new StringBuilder();
+    	for (int i=0; i<args.length; i++) {
+    		final String arg = args[i];
+    		buf.setLength(0);
+    		
+    		char quoteChar = 0;
+    		boolean chg = false;
+    		for (int j=0; j<arg.length(); j++) {
+    			char c=arg.charAt(j);
+    			if (quoteChar == 0) { // Not between quotes
+    				switch (c) {
+    				case '"':
+    				case '\'':
+    					quoteChar = c;
+    					chg = true;
+    					break;
+    				default:
+    					buf.append(c);
+    					break;
+    				}
+    			} else { // Between quotes
+    				if (c == quoteChar) {
+    					quoteChar = 0;
+    				} else {
+    					buf.append(c);
+    				}
+    			}
+    		}
+    		args[i] = chg ? buf.toString() : arg;
+    	}
     }
 
     protected static void processCommandLineForJob(ConsCommandLineOpts opts) {
