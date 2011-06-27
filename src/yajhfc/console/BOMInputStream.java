@@ -75,20 +75,19 @@ public class BOMInputStream extends FilterInputStream {
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
-        if (bufpos >= buflen) {
+        int remainingBuf = buflen - bufpos;
+        if (remainingBuf <= 0) {
             return in.read(b, off, len);
         } else {
-            int i;
-            for (i=0; i<len; i++) {
-                int by = read();
-                if (by < 0) {
-                    if (i==0)
-                        return -1;
-                    break;
-                }
-                b[off+i] = (byte)by;
+            int copyLen = Math.min(remainingBuf, len);
+            System.arraycopy(buf, bufpos, b, off, copyLen);
+            bufpos += copyLen;
+            
+            if (copyLen < len) {
+                return copyLen + in.read(b, off+copyLen, len-copyLen);
+            } else {
+                return copyLen;
             }
-            return i;
         }
     }
 
