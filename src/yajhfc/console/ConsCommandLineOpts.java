@@ -179,7 +179,6 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     
     // max non-char-opt: 15
     final static LongOpt[] longOptsOnlyOnce = new LongOpt[] {
-            new LongOpt("admin", LongOpt.NO_ARGUMENT, null, 'A'),
             new LongOpt("appendlogfile", LongOpt.REQUIRED_ARGUMENT, null, 1),
             new LongOpt("batch", LongOpt.OPTIONAL_ARGUMENT, null, 'b'),
             new LongOpt("batch-format", LongOpt.REQUIRED_ARGUMENT, null, 13),
@@ -200,9 +199,10 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("Xprint-manpage", LongOpt.NO_ARGUMENT, null, -3),
             new LongOpt("Xprint-po-template", LongOpt.OPTIONAL_ARGUMENT, null, -4),
     };
-    final static String shortOptsOnlyOnce = "Ab::c:dh::l:qv"; 
+    final static String shortOptsOnlyOnce = "b::c:dh::l:qv"; 
     
     final static LongOpt[] longOptsPerJob = new LongOpt[] {
+        	new LongOpt("admin", LongOpt.NO_ARGUMENT, null, 'A'),
             new LongOpt("archive-job", LongOpt.OPTIONAL_ARGUMENT, null, 9),
             new LongOpt("comment", LongOpt.REQUIRED_ARGUMENT, null, 10),
             new LongOpt("custom-cover", LongOpt.REQUIRED_ARGUMENT, null, 11),
@@ -223,7 +223,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("subject", LongOpt.REQUIRED_ARGUMENT, null, 's'),
             new LongOpt("use-cover", LongOpt.OPTIONAL_ARGUMENT, null, 'C'),
     };
-    final static String shortOptsPerJob = "P:I:k:m:N:M:pQ:r:R:t:S:s:C::"; 
+    final static String shortOptsPerJob = "AP:I:k:m:N:M:pQ:r:R:t:S:s:C::"; 
     
     
     /**
