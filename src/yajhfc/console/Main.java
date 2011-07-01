@@ -249,6 +249,11 @@ public class Main {
                     server = ServerManager.getDefault().getCurrent(); 
                 }
             }
+            if (opts.isCustomServerOptions()) {
+                ServerOptions newSO = new ServerOptions(server.getOptions());
+                opts.fillCustomServerOptions(newSO);
+                server = new Server(newSO);
+            }
             if (opts.admin) {
                 server.getClientManager().setAdminMode(opts.admin);
             }
@@ -344,6 +349,8 @@ public class Main {
                 }
                 if ("DONE+REQUEUE".equals(n)) {
                     sendController.setNotificationType(FaxNotification.DONE_AND_REQUEUE);
+                } else if ("NONE".equals(n)) {
+                    sendController.setNotificationType(FaxNotification.NEVER);
                 } else {
                     printError(MessageFormat.format(_("Invalid notification type {0}, using default instead."), n));
                 }

@@ -45,6 +45,7 @@ import yajhfc.launch.Launcher2;
 import yajhfc.launch.ManPrinter;
 import yajhfc.plugin.PluginManager.PluginInfo;
 import yajhfc.plugin.PluginType;
+import yajhfc.server.ServerOptions;
 import yajhfc.ui.console.ConsoleIO;
 
 public class ConsCommandLineOpts extends CommonCommandLineOpts {
@@ -177,7 +178,54 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     public Boolean useCover = null;
     
     
-    // max non-char-opt: 15
+    // Server options allowed to set
+    
+    /**
+     * The HylaFAX server's host name
+     */
+    public String host = null;
+    /**
+     * The TCP port to connect to 
+     */
+    public int port = -1;
+    /**
+     * Use passive mode for HylaFAX protocol operations
+     */
+    public Boolean passive = null;
+    /**
+     * The user name used to connect to the HylaFAX server
+     */
+    public String user = null;
+    /**
+     * The password used to connect to the HylaFAX server
+     */
+    public String password = null;
+    /**
+     * The administrative password used to connect to the HylaFAX server in admin mode
+     */
+    public String adminPassword = null;
+    
+    /**
+     * The character encoding used by the HylaFAX server
+     */
+    public String hylaFAXEncoding = null;
+
+    /**
+     * The default maximum number of dials sending a fax
+     */
+    public int maxDials = -1;
+    /**
+     * The notification e-mail address sent to the HylaFAX server
+     */
+    public String notifyAddress = null;
+    
+    /**
+     * A prefix prepended to the fax number before sending it to HylaFAX
+     */
+    public String numberPrefix = null;
+    
+    
+    // max non-char-opt: 22
     final static LongOpt[] longOptsOnlyOnce = new LongOpt[] {
             new LongOpt("appendlogfile", LongOpt.REQUIRED_ARGUMENT, null, 1),
             new LongOpt("batch", LongOpt.OPTIONAL_ARGUMENT, null, 'b'),
@@ -203,17 +251,26 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     
     final static LongOpt[] longOptsPerJob = new LongOpt[] {
         	new LongOpt("admin", LongOpt.NO_ARGUMENT, null, 'A'),
+        	new LongOpt("admin-password", LongOpt.REQUIRED_ARGUMENT, null, 16),
             new LongOpt("archive-job", LongOpt.OPTIONAL_ARGUMENT, null, 9),
             new LongOpt("comment", LongOpt.REQUIRED_ARGUMENT, null, 10),
             new LongOpt("custom-cover", LongOpt.REQUIRED_ARGUMENT, null, 11),
             new LongOpt("custom-property", LongOpt.REQUIRED_ARGUMENT, null, 'P'),
+            new LongOpt("host", LongOpt.REQUIRED_ARGUMENT, null, 'H'),
+            new LongOpt("hylafax-encoding", LongOpt.REQUIRED_ARGUMENT, null, 17),
             new LongOpt("identity", LongOpt.REQUIRED_ARGUMENT, null, 'I'),
             new LongOpt("kill-time", LongOpt.REQUIRED_ARGUMENT, null, 'k'),
+            new LongOpt("max-dials", LongOpt.REQUIRED_ARGUMENT, null, 18),
             new LongOpt("max-tries", LongOpt.REQUIRED_ARGUMENT, null, 'm'),
             new LongOpt("notification", LongOpt.REQUIRED_ARGUMENT, null, 'N'),
+            new LongOpt("notify-address", LongOpt.REQUIRED_ARGUMENT, null, 19),
+            new LongOpt("number-prefix", LongOpt.REQUIRED_ARGUMENT, null, 20),
             new LongOpt("modem", LongOpt.REQUIRED_ARGUMENT, null, 'M'),
             new LongOpt("paper-size", LongOpt.REQUIRED_ARGUMENT, null, 'p'),
+            new LongOpt("passive", LongOpt.OPTIONAL_ARGUMENT, null, 21),
+            new LongOpt("password", LongOpt.REQUIRED_ARGUMENT, null, 'w'),
             new LongOpt("poll", LongOpt.NO_ARGUMENT, null, 12),
+            new LongOpt("port", LongOpt.REQUIRED_ARGUMENT, null, 22),
             new LongOpt("query-job-status", LongOpt.REQUIRED_ARGUMENT, null, 'Q'),
             new LongOpt("query-property", LongOpt.REQUIRED_ARGUMENT, null, 14),
             new LongOpt("recipient", LongOpt.REQUIRED_ARGUMENT, null, 'r'),
@@ -222,8 +279,9 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("server", LongOpt.REQUIRED_ARGUMENT, null, 'S'),
             new LongOpt("subject", LongOpt.REQUIRED_ARGUMENT, null, 's'),
             new LongOpt("use-cover", LongOpt.OPTIONAL_ARGUMENT, null, 'C'),
+            new LongOpt("user", LongOpt.REQUIRED_ARGUMENT, null, 'U'),
     };
-    final static String shortOptsPerJob = "AP:I:k:m:N:M:pQ:r:R:t:S:s:C::"; 
+    final static String shortOptsPerJob = "AP:H:I:k:m:N:M:p:w:Q:r:R:t:S:s:C::U:"; 
     
     
     /**
@@ -269,9 +327,6 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
                 }
                 break;
             case -2: // no-check (in general: ignore)
-                break;
-            case 'A': // admin
-                admin = true;
                 break;
             case 1: // appendlogfile
                 logFile = getopt.getOptarg();
@@ -345,6 +400,12 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             	printVersionInfo();
                 System.exit(0);
                 break;
+            case 'A': // admin
+                admin = true;
+                break;
+            case 16: // admin-password
+                adminPassword = getopt.getOptarg();
+                break;
             case 9: //archive-job
                 archiveJob = parseOptionalBoolean(getopt.getOptarg());
                 break;
@@ -357,11 +418,20 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             case 'P': //custom-property
                 customProperties.add(getopt.getOptarg());
                 break;
+            case 'H': // host
+                host = getopt.getOptarg();
+                break;
+            case 17: // hylafax-encoding
+                hylaFAXEncoding = getopt.getOptarg();
+                break;
             case 'I': // identity
                 identity = getopt.getOptarg();
                 break;
             case 'k': // kill-time
                 killTime = parseDate(getopt.getOptarg(), "kill-time");
+                break;
+            case 18: // max-dials
+                maxDials = parseInt(getopt.getOptarg(), "max-dials");
                 break;
             case 'm': // max-tries
                 maxTries = parseInt(getopt.getOptarg(), "max-tries");
@@ -369,14 +439,29 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             case 'N': // notification
                 notification = getopt.getOptarg();
                 break;
+            case 19: // notify-address
+                notifyAddress = getopt.getOptarg();
+                break;
+            case 20: // number-prefix
+                numberPrefix = getopt.getOptarg();
+                break;
             case 'M': // modem
                 modem = getopt.getOptarg();
                 break;
             case 'p': // paper-size
                 paperSize = getopt.getOptarg();
                 break;
+            case 21: // passive
+                passive = parseOptionalBoolean(getopt.getOptarg());
+                break;
+            case 'w': // password
+                password = getopt.getOptarg();
+                break;
             case 12: // poll
                 poll = true;
+                break;
+            case 22: // port
+                port = parseInt(getopt.getOptarg(), "port");
                 break;
             case 'Q': // query-job-status
                 int val = parseInt(getopt.getOptarg(), "query-job-status");
@@ -403,6 +488,9 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
                 break;
             case 'C': // use-cover
                 useCover = parseOptionalBoolean(getopt.getOptarg());
+                break;
+            case 'U': // user
+                user = getopt.getOptarg();
                 break;
             case '?':
                 break;
@@ -542,6 +630,52 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     
     public boolean isSendAction() {
     	return (poll || recipients.size() > 0 || queryJobStatus.size() > 0);
+    }
+    
+    public boolean isCustomServerOptions() {
+        return 
+          (host != null) ||
+          (port > 0) ||
+          (passive != null) ||
+          (user != null) ||
+          (password != null) ||
+          (adminPassword != null) ||
+          (hylaFAXEncoding != null) ||
+          (maxDials > 0) ||
+          (notifyAddress != null) ||
+          (numberPrefix != null);
+    }
+    
+    public void fillCustomServerOptions(ServerOptions target) {
+          if (host != null) 
+              target.host = host;
+          if (port > 0)
+              target.port = port;
+          if (passive != null)
+              target.pasv = passive.booleanValue();
+          if (user != null) {
+              target.user = user;
+              target.askUsername = false;
+          }
+          if (password != null) {
+              target.pass.setPassword(password);
+              target.askPassword = false;
+          }
+          if (adminPassword != null) {
+              target.AdminPassword.setPassword(adminPassword);
+              target.askAdminPassword = false;
+          }
+          if (hylaFAXEncoding != null) 
+              target.hylaFAXCharacterEncoding = hylaFAXEncoding;
+          if (maxDials > 0)
+              target.maxDial = maxDials;
+          if (notifyAddress != null)
+              target.notifyAddress = notifyAddress;
+          if (numberPrefix != null)
+              target.numberPrefix = numberPrefix;
+          
+          // Ensure we log out after sending the fax(es)
+          target.useDisconnectedMode = true;
     }
     
     static LongOpt[] sortLongOpts(LongOpt[] in) {

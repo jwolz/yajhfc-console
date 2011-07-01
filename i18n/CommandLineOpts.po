@@ -3,14 +3,15 @@
 # while those ending in -arg contain the description of parameter to the argument
 msgid ""
 msgstr ""
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jonas Wolz <jonas.wolz@freenet.de>\n"
 "Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 
 # Untranslated text: Usage
 msgid "usage"
@@ -27,10 +28,6 @@ msgstr "OPTIONS"
 # Untranslated text: FILES TO SEND
 msgid "files-to-send"
 msgstr "FILES TO SEND"
-
-# Untranslated text: Start up in admin mode.
-msgid "admin-desc"
-msgstr "Start up in admin mode."
 
 # Untranslated text: Append debug information to the given log file.
 msgid "appendlogfile-desc"
@@ -140,6 +137,18 @@ msgstr "Print more messages. You can specify this multiple times to be more verb
 msgid "version-desc"
 msgstr "Prints version information."
 
+# Untranslated text: Start up in admin mode.
+msgid "admin-desc"
+msgstr "Start up in admin mode."
+
+# Untranslated text: Specifies the administrative password to use.
+msgid "admin-password-desc"
+msgstr "Specifies the administrative password to use."
+
+# Untranslated text: PASSWORD
+msgid "admin-password-arg"
+msgstr "PASSWORD"
+
 # Untranslated text: Set the HylaFAX \"archive\" flag for this job.
 msgid "archive-job-desc"
 msgstr "Set the HylaFAX \"archive\" flag for this job."
@@ -172,6 +181,22 @@ msgstr "Sets a custom HylaFAX property (JPARM) for this fax job. To set multiple
 msgid "custom-property-arg"
 msgstr "KEY=VALUE"
 
+# Untranslated text: Specifies the host name of the HylaFAX server to connect to.
+msgid "host-desc"
+msgstr "Specifies the host name of the HylaFAX server to connect to."
+
+# Untranslated text: HOST
+msgid "host-arg"
+msgstr "HOSTNAME"
+
+# Untranslated text: Specifies the character encoding (character set) to use for communicating with the HylaFAX server.
+msgid "hylafax-encoding-desc"
+msgstr "Specifies the character encoding (character set) to use for communicating with the HylaFAX server."
+
+# Untranslated text: CHARSET
+msgid "hylafax-encoding-arg"
+msgstr "CHARSET"
+
 # Untranslated text: Sets the sender identity to use when sending the fax. Specify either the identity's name (e.g. \"My identity\"), the identity's list index (0 is the first element) or the ID in the form \"#ID\".
 msgid "identity-desc"
 msgstr "Sets the sender identity to use when sending the fax. Specify either the identity's name (e.g. \"My identity\"), the identity's list index (0 is the first element) or the ID in the form \"#ID\"."
@@ -187,6 +212,14 @@ msgstr "The time to \"kill\" the fax job after if it has not been sent successfu
 # Untranslated text: TIMESPEC
 msgid "kill-time-arg"
 msgstr "TIMESPEC"
+
+# Untranslated text:
+msgid "max-dials-desc"
+msgstr "Specifies the maximum number of dials when trying to send a fax."
+
+# Untranslated text:
+msgid "max-dials-arg"
+msgstr "DIALS"
 
 # Untranslated text: The maximum number of attempts in delivering the fax HylaFAX will perform.
 msgid "max-tries-desc"
@@ -204,6 +237,22 @@ msgstr "The type of mail status notification for this fax job done by HylaFAX."
 msgid "notification-arg"
 msgstr "none|done|requeued|done+requeued"
 
+# Untranslated text: Specifies the e-mail address to be used by the HylaFAX server fax status notifications.
+msgid "notify-address-desc"
+msgstr "Specifies the e-mail address to be used by the HylaFAX server fax status notifications."
+
+# Untranslated text: EMAIL
+msgid "notify-address-arg"
+msgstr "EMAIL"
+
+# Untranslated text: Specifies a prefix prepended to all fax numbers before sending them to the HylaFAX server
+msgid "number-prefix-desc"
+msgstr "Specifies a prefix prepended to all fax numbers before sending them to the HylaFAX server."
+
+# Untranslated text: NUMBERS
+msgid "number-prefix-arg"
+msgstr "NUMBERS"
+
 # Untranslated text: Sets the modem to send the fax. Specify either the modem's name (e.g. ttyS0) or \"any\" to use any modem.
 msgid "modem-desc"
 msgstr "Sets the modem to send the fax. Specify either the modem's name (e.g. ttyS0) or \"any\" to use any modem."
@@ -220,9 +269,33 @@ msgstr "The paper size to use for sending the fax."
 msgid "paper-size-arg"
 msgstr "a4|a5|legal|letter"
 
+# Untranslated text: Use passive mode (yes) or active mode (no) when communicating with the HylaFAX server?
+msgid "passive-desc"
+msgstr "Use passive mode (yes) or active mode (no) when communicating with the HylaFAX server?"
+
+# DO NOT translate!
+msgid "passive-arg"
+msgstr "yes|no"
+
+# Untranslated text: Specifies the password to use.
+msgid "password-desc"
+msgstr "Specifies the password to use."
+
+# Untranslated text: PASSWORD
+msgid "password-arg"
+msgstr "PASSWORD"
+
 # Untranslated text: Poll the recipient for faxes instead of sending one to it
 msgid "poll-desc"
 msgstr "Poll the recipient for faxes instead of sending one to it."
+
+# Untranslated text: Specifies the TCP port to connect to on the HylaFAX server.
+msgid "port-desc"
+msgstr "Specifies the TCP port to connect to on the HylaFAX server."
+
+# DO NOT translate!
+msgid "port-arg"
+msgstr "1-65535"
 
 # Untranslated text: Querys the status of the fax job identified by the given ID. You can specify this parameter multiple times to query the status of multiple jobs.
 msgid "query-job-status-desc"
@@ -288,4 +361,11 @@ msgstr "Use a cover page for sending a fax."
 msgid "use-cover-arg"
 msgstr "yes|no"
 
+# Untranslated text: Specifies the user name to log into the HylaFAX server
+msgid "user-desc"
+msgstr "Specifies the user name to log into the HylaFAX server."
+
+# Untranslated text: USERNAME
+msgid "user-arg"
+msgstr "USERNAME"
 
