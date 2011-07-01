@@ -1,0 +1,366 @@
+# Help texts for the command line.
+# Messages ending in -desc contain descriptions of the arguments,
+# while those ending in -arg contain the description of parameter to the argument
+
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# Untranslated text: Usage
+msgid "usage"
+msgstr "Usage"
+
+# Untranslated text: Argument description
+msgid "argument-description"
+msgstr "Argument description"
+
+# Untranslated text: OPTIONS
+msgid "options"
+msgstr "OPTIONS"
+
+# Untranslated text: FILES TO SEND
+msgid "files-to-send"
+msgstr "FILES TO SEND"
+
+# Untranslated text: 
+msgid "appendlogfile-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "appendlogfile-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "batch-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "batch-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "batch-format-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "batch-format-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "configdir-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "configdir-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "debug-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "help-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "help-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "loaddriver-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "loaddriver-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "loadplugin-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "loadplugin-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "logfile-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "logfile-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "no-check-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "no-plugins-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "override-setting-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "override-setting-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "print-jobids-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "print-jobids-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "quiet-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "stdin-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "verbose-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "version-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "admin-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "admin-password-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "admin-password-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "archive-job-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "archive-job-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "comment-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "comment-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "custom-cover-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "custom-cover-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "custom-property-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "custom-property-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "host-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "host-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "hylafax-encoding-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "hylafax-encoding-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "identity-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "identity-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "kill-time-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "kill-time-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "max-dials-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "max-dials-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "max-tries-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "max-tries-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "notification-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "notification-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "notify-address-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "notify-address-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "number-prefix-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "number-prefix-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "modem-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "modem-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "paper-size-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "paper-size-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "passive-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "passive-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "password-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "password-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "poll-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "port-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "port-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "query-job-status-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "query-job-status-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "query-property-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "query-property-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "recipient-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "recipient-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "resolution-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "resolution-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "send-time-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "send-time-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "server-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "server-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "subject-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "subject-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "use-cover-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "use-cover-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "user-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "user-arg"
+msgstr ""
+
