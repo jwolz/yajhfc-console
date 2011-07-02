@@ -287,17 +287,21 @@ public class Main {
            } 
         });
 
+        SenderIdentity identity;
         if (opts.identity != null) {
-            SenderIdentity identity = IDAndNameOptions.getItemFromCommandLineCoding(Utils.getFaxOptions().identities, opts.identity);
-            if (identity != null) {
-                sendController.setFromIdentity(identity);
-            } else {
+            identity = IDAndNameOptions.getItemFromCommandLineCoding(Utils.getFaxOptions().identities, opts.identity);
+            if (identity == null) {
                 log.warning("Identity not found, using default instead: " + opts.identity);
-                sendController.setFromIdentity(server.getDefaultIdentity());
+                identity = server.getDefaultIdentity();
             }
         } else {
-            sendController.setFromIdentity(server.getDefaultIdentity());
+            identity = server.getDefaultIdentity();
         }
+        if (opts.fromIdentity != null) {
+            identity = new SenderIdentity(identity);
+            DefaultPBEntryFieldContainer.parseStringToPBEntryFieldContainer(identity, opts.fromIdentity);
+        }
+        sendController.setFromIdentity(identity);
         
         if (opts.archiveJob != null) 
             sendController.setArchiveJob(opts.archiveJob.booleanValue());
