@@ -177,6 +177,11 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
      */
     public Boolean useCover = null;
     
+    /**
+     * The values overridden for the from identity
+     */
+    public String fromIdentity = null;
+    
     
     // Server options allowed to set
     
@@ -225,7 +230,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     public String numberPrefix = null;
     
     
-    // max non-char-opt: 22
+    // max non-char-opt: 23
     final static LongOpt[] longOptsOnlyOnce = new LongOpt[] {
             new LongOpt("appendlogfile", LongOpt.REQUIRED_ARGUMENT, null, 1),
             new LongOpt("batch", LongOpt.OPTIONAL_ARGUMENT, null, 'b'),
@@ -256,6 +261,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("comment", LongOpt.REQUIRED_ARGUMENT, null, 10),
             new LongOpt("custom-cover", LongOpt.REQUIRED_ARGUMENT, null, 11),
             new LongOpt("custom-property", LongOpt.REQUIRED_ARGUMENT, null, 'P'),
+            new LongOpt("from-identity", LongOpt.REQUIRED_ARGUMENT, null, 23),
             new LongOpt("host", LongOpt.REQUIRED_ARGUMENT, null, 'H'),
             new LongOpt("hylafax-encoding", LongOpt.REQUIRED_ARGUMENT, null, 17),
             new LongOpt("identity", LongOpt.REQUIRED_ARGUMENT, null, 'I'),
@@ -417,6 +423,9 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
                 break;
             case 'P': //custom-property
                 customProperties.add(getopt.getOptarg());
+                break;
+            case 23: // from-identity
+                fromIdentity = getopt.getOptarg();
                 break;
             case 'H': // host
                 host = getopt.getOptarg();
@@ -711,9 +720,11 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     }
     
     public ConsCommandLineOpts() {
+        super();
     }
     
     public ConsCommandLineOpts(String[] args) {
+        this();
         parse(args, false);
     }
 }

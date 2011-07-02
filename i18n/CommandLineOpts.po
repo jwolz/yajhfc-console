@@ -235,7 +235,7 @@ msgstr "The type of mail status notification for this fax job done by HylaFAX."
 
 # DO NOT translate!
 msgid "notification-arg"
-msgstr "none|done|requeued|done+requeued"
+msgstr "none|done|requeue|done+requeue"
 
 # Untranslated text: Specifies the e-mail address to be used by the HylaFAX server fax status notifications.
 msgid "notify-address-desc"
@@ -317,9 +317,9 @@ msgstr "PROPERTYNAME"
 msgid "recipient-desc"
 msgstr "Specifies a recipient to send the fax to. You may specify either a fax number or detailed cover page information (see the FAQ for the format in the latter case). You may specify --recipient multiple times for multiple recipients."
 
-# Untranslated text: RECIPIENT
+# Untranslated text: IDENTITY-SPEC
 msgid "recipient-arg"
-msgstr "RECIPIENT"
+msgstr "IDENTITY-SPEC"
 
 # Untranslated text: The resolution to use for sending the fax.
 msgid "resolution-desc"
@@ -369,3 +369,10 @@ msgstr "Specifies the user name to log into the HylaFAX server."
 msgid "user-arg"
 msgstr "USERNAME"
 
+# Untranslated text: Sets fields of the sender identity used by the cover page. The format of the argument is the same as for --recipient. Fields not specified in the argument string use the values of the current identity (i.e. the identity selected by --identity is used as a template).
+msgid "from-identity-desc"
+msgstr "Sets fields of the sender identity used by the cover page. The format of the argument is the same as for --recipient. Fields not specified in the argument string use the values of the current identity (i.e. the identity selected by --identity is used as a template)." 
+
+# Untranslated text: IDENTITY-SPEC
+msgid "from-identity-arg"
+msgstr "IDENTITY-SPEC"
