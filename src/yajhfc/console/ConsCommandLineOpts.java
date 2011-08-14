@@ -323,9 +323,21 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
                     System.exit(1);
                 }
                 break;
-            case -3: //Xprint-manpage // TODO
+            case -3: //Xprint-manpage 
                 try {
-                    new ManPrinter("yajhfc.console.i18n.CommandLineOpts").printManPage(Launcher2.getConsoleWriter(), sortLongOpts(longOpts));
+                    ManPrinter mp = new ManPrinter("yajhfc.console.i18n.CommandLineOpts");
+                    mp.commandName = CMDLINE_NAME;
+                    mp.additionalSynopsis = 
+                    "This command implements a command line only interface. For a graphical interface, please see \\fByajhfc\\fP.\n"+
+                    ".br\n"+
+                    "Please also note that the configuration has to be done using the graphical interface of the \\fByajhfc\\fP command."; 
+                    mp.seeAlsoList[0] = "yajhfc (1)"; // Replace cyajhfc with yajhfc
+                    mp.docLocations = new String[] {
+                            "/usr/share/doc/yajhfc",
+                            "/usr/share/doc/yajhfc-console",
+                    };
+                    
+                    mp.printManPage(Launcher2.getConsoleWriter(), sortLongOpts(longOpts));
                     System.exit(0);
                 } catch (Exception e) {
                     e.printStackTrace();
