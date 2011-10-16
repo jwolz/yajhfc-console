@@ -103,7 +103,7 @@
 			<zipfileset dir="${build}" includes="*.jar,*.exe" />
 			<zipfileset dir="${dist-extra}" excludes="**/*.sh"/>
 			<zipfileset dir="${dist-extra}" includes="**/*.sh" filemode="0755"/>
-			<zipfileset file="${yajhfc-jar}"/>
+			<!-- <zipfileset file="${yajhfc-jar}"/> -->
 		</zip>
 	</target>
 

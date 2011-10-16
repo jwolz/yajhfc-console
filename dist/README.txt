@@ -5,6 +5,8 @@ QUICK START
 -----------
 
 - Copy the contents of this archive to a folder convenient for you
+- Download yajhfc-X_Y_Z.jar from http://www.yajhfc.de/downloads/current-version, (X_Y_Z stands for the version, i.e. download yajhfc-0_5_1.jar for version 0.5.1) 
+  copy it in the same directory where yajhfc-console.jar is and rename yajhfc-X_Y_Z.jar to yajhfc.jar
 - Invoke cyajhfc.sh for UNIX or cyajhfc.exe for Windows to start the application (please note that both jar files must be in the same directory as the sh/exe file)
 
 Configuration of the application must have been done using the graphical interface before (just start YajHFC or double click yajhfc.jar to do that). 
