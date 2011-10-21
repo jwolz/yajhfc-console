@@ -23,6 +23,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+/**
+ * ConsoleIO implementation using System.in/out/err
+ * 
+ * @author jonas
+ *
+ */
+//!!! IMPORTANT: Do not use yajhfc.Utils in here !!!
 public class StreamConsoleIO extends ConsoleIO {
     protected final PrintWriter writer;
     protected final PrintWriter errWriter;

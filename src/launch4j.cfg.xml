@@ -17,5 +17,6 @@
     <path></path>
     <minVersion>1.6.0</minVersion>
     <jdkPreference>jreOnly</jdkPreference>
+    <opt>-Duser.home="%USERPROFILE%"</opt>
   </jre>
 </launch4jConfig>

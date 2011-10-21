@@ -1,0 +1,5 @@
+
+syntax: regexp
+^i18n/bin/yajhfc$
+syntax: regexp
+^build$
