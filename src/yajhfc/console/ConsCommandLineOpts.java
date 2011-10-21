@@ -540,7 +540,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
         try {
             return Integer.parseInt(optarg);
         } catch (NumberFormatException nfe) {
-            System.err.println(MessageFormat.format(_("The value \"{0}\" specified for argument {1} is not a number."), optarg, valueName));
+            ConsoleIO.getDefault().errWriter().println(MessageFormat.format(_("The value \"{0}\" specified for argument {1} is not a number."), optarg, valueName));
             return -1;
         }
     }
@@ -624,7 +624,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
                         cal.add(Calendar.MILLISECOND, (int)rv.getTime());
                         return cal.getTime();
                     } else {
-                        System.err.println(MessageFormat.format(_("The value \"{0}\" specified for argument {1} is not a recognized date/time value."), optarg, valueName));
+                        ConsoleIO.getDefault().errWriter().println(MessageFormat.format(_("The value \"{0}\" specified for argument {1} is not a recognized date/time value."), optarg, valueName));
                         return null;
                     }
                 }

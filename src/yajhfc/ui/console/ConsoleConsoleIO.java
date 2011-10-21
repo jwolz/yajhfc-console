@@ -28,9 +28,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * ConsoleIO implementation using the JDK6 Console class
+ * 
  * @author jonas
  *
  */
+//!!! IMPORTANT: Do not use yajhfc.Utils in here !!!
 public class ConsoleConsoleIO extends ConsoleIO {
     protected final Console console;
     protected final PrintWriter errWriter;

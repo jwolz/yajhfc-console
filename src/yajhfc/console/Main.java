@@ -153,7 +153,7 @@ public class Main {
     	if ("cmdline".equalsIgnoreCase(opts.batchFormat)) {
     		processBatchCmdLineFmt(opts);
     	} else {
-    		System.err.println(_("Unsupported batch data format") + ": " + opts.batchFormat);
+    	    ConsoleIO.getDefault().println(ConsoleIO.VERBOSITY_ERROR, _("Unsupported batch data format") + ": " + opts.batchFormat);
     		System.exit(EXIT_CODE_WRONG_PARAMETERS);
     	}
     }

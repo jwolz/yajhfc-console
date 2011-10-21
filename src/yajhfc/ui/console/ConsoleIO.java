@@ -21,9 +21,9 @@ package yajhfc.ui.console;
 import java.io.Console;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import yajhfc.Utils;
 
 /**
  * Implements console IO that can either use the JDK6 console object
@@ -32,6 +32,7 @@ import yajhfc.Utils;
  * @author jonas
  *
  */
+// !!! IMPORTANT: Do not use yajhfc.Utils in here !!!
 public abstract class ConsoleIO {
     static final Logger log = Logger.getLogger(ConsoleIO.class.getName());
     
@@ -128,7 +129,7 @@ public abstract class ConsoleIO {
      * @param args
      */
     public void printf(int priority, String format, Object... args) {
-        if (Utils.debugMode)
+        if (log.isLoggable(Level.FINE))
             log.fine("printf(" + priority + ", " + format + ", " + Arrays.toString(args) + ")");
         if (priority >= verbosity)
             printfImpl(format, args);
@@ -141,7 +142,7 @@ public abstract class ConsoleIO {
      * @param args
      */
     public void print(int priority, String text) {
-        if (Utils.debugMode)
+        if (log.isLoggable(Level.FINE))
             log.fine("print(" + priority + ", " + text + ")");
         if (priority >= verbosity)
             printImpl(text);
@@ -154,7 +155,7 @@ public abstract class ConsoleIO {
      * @param args
      */
     public void println(int priority, String text) {
-        if (Utils.debugMode)
+        if (log.isLoggable(Level.FINE))
             log.fine("println(" + priority + ", " + text + ")");
         if (priority >= verbosity)
             printlnImpl(text);

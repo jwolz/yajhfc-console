@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: YajHFC 0.5.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-20 14:05+0200\n"
+"PO-Revision-Date: 2011-10-20 15:44+0300\n"
+"Last-Translator: Alexander Moisseev <moiseev@mezonplus.ru>\n"
+"Language-Team: RUSSIAN <moiseev@mezonplus.ru>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/yajhfc/console/ConsCommandLineOpts.java:410
+#, java-format
+msgid "The value \"{0}\" specified for argument {1} is not a number."
+msgstr "Значение \"{0}\", указанное в качестве параметра {1}, не является числом."
+
+#: ../src/yajhfc/console/ConsCommandLineOpts.java:494
+#, java-format
+msgid "The value \"{0}\" specified for argument {1} is not a recognized date/time value."
+msgstr "Значение \"{0}\", указанное в качестве параметра {1}, не является распознаваемым значением даты/времени."
+
+#: ../src/yajhfc/console/Main.java:75
+#: ../src/yajhfc/console/Main.java:80
+msgid "Invalid command line arguments:"
+msgstr "Недопустимые параметры командной строки:"
+
+#: ../src/yajhfc/console/Main.java:75
+msgid "You cannot specify both --stdin and use batch input from stdin."
+msgstr "Вы не можете одновременно указать --stdin и считать командный файл со стандартного ввода."
+
+#: ../src/yajhfc/console/Main.java:88
+msgid "You cannot both query a job status and specify documents to send."
+msgstr "Вы не можете одновременно запрашивать состояние задания и указывать документ для отправки."
+
+#: ../src/yajhfc/console/Main.java:92
+msgid "You cannot both query a job status and specify recipients."
+msgstr "Вы не можете одновременно запрашивать состояние задания и указывать получателей."
+
+#: ../src/yajhfc/console/Main.java:97
+msgid "You have to specify at least one recipient or query a job status or use batch mode."
+msgstr "Вы должны указать по крайней мере одного получателя или запросить состояние задания или использовать командный файл."
+
+#: ../src/yajhfc/console/Main.java:102
+msgid "You cannot specify poll mode and have documents to send."
+msgstr "Вы не можете одновременно указывать режим запроса и документы для отправки."
+
+#: ../src/yajhfc/console/Main.java:141
+msgid "Unsupported batch data format"
+msgstr "Неподдерживаемый формат командного файла"
+
+#: ../src/yajhfc/console/Main.java:168
+#: ../src/yajhfc/console/Main.java:171
+msgid "Line"
+msgstr "Строка"
+
+#: ../src/yajhfc/console/Main.java:168
+msgid "Invalid arguments specified in batch mode:"
+msgstr "Недопустимые параметры в командном файле:"
+
+#: ../src/yajhfc/console/Main.java:171
+msgid "data was"
+msgstr "данные были"
+
+#: ../src/yajhfc/console/Main.java:177
+#, java-format
+msgid "Error processing the batch data from \"{0}\":"
+msgstr "Ошибка выполнения командного файла \"{0}\":"
+
+#: ../src/yajhfc/console/Main.java:207
+msgid "Error performing the requested operation:"
+msgstr "Ошибка выполнения запрошенной операции:"
+
+#: ../src/yajhfc/console/Main.java:224
+msgid "Sending a fax failed, exiting program."
+msgstr "Отправить факс не удалось, завершение работы программы."
+
+#: ../src/yajhfc/console/Main.java:257
+msgid "Invalid custom property"
+msgstr "Недопустимый пользовательский параметр"
+
+#: ../src/yajhfc/console/Main.java:271
+msgid "The kill time must be in the future; using default instead."
+msgstr "Время принудительного завершения должно быть в будущем; использовано значение по умолчанию."
+
+#: ../src/yajhfc/console/Main.java:293
+#, java-format
+msgid "Invalid notification type {0}, using default instead."
+msgstr "Недопустимый тип уведомления {0}, использовано значение по умолчанию."
+
+#: ../src/yajhfc/console/Main.java:305
+#, java-format
+msgid "Invalid paper size {0}, using default instead"
+msgstr "Недопустимый размер бумаги {0}, использовано значение по умолчанию."
+
+#: ../src/yajhfc/console/Main.java:325
+#, java-format
+msgid "Invalid fax resolution {0}, using default instead"
+msgstr "Недопустимое разрешение факса {0}, использовано значение по умолчанию."
+
+#: ../src/yajhfc/console/Main.java:345
+msgid "Invalid data specified for fax, exiting program."
+msgstr "Указаны недопустимые данные для факса, завершение работы программы."
+
+#: ../src/yajhfc/ui/console/ConsoleYajOptionPane.java:62
+msgid "User name"
+msgstr "Имя пользователя"
+
+#: ../src/yajhfc/ui/console/ConsoleYajOptionPane.java:72
+msgid "Password for user %s"
+msgstr "Пароль для пользователя %s"
+
