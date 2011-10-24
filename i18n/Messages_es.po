@@ -1,0 +1,120 @@
+# Spanish/Spain translation of YajHFC console.
+# Copyright (C) 2011 THE  YajHFC console'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the  YajHFC console package.
+# Elsa Andrés <e.andres@ist-sci.com>, 2011.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: YajHFC console 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-20 14:05+0200\n"
+"PO-Revision-Date: 2011-10-23 13:17+0200\n"
+"Last-Translator: Elsa Andrés <e.andres@ist-sci.com>\n"
+"Language-Team: Spanish/Spain <yajhfc-translators@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: ../src/yajhfc/console/ConsCommandLineOpts.java:410
+#, java-format
+msgid "The value \"{0}\" specified for argument {1} is not a number."
+msgstr "El valor \"{0}\" especificado para el argumento {1} no es un número."
+
+#: ../src/yajhfc/console/ConsCommandLineOpts.java:494
+#, java-format
+msgid ""
+"The value \"{0}\" specified for argument {1} is not a recognized date/time "
+"value."
+msgstr "El valor \"{0}\" especificado para el argumento {1} no se reconoce como valor de fecha/hora."
+
+#: ../src/yajhfc/console/Main.java:75 ../src/yajhfc/console/Main.java:80
+msgid "Invalid command line arguments:"
+msgstr "Argumentos de línea de comandos no válidos:"
+
+#: ../src/yajhfc/console/Main.java:75
+msgid "You cannot specify both --stdin and use batch input from stdin."
+msgstr "No puede hacer ambas cosas: especificar el argumento --stdin y usar una entrada de proceso en lotes desde stdin."
+
+#: ../src/yajhfc/console/Main.java:88
+msgid "You cannot both query a job status and specify documents to send."
+msgstr "No puede hacer ambas cosas: consultar el estado de un trabajo y especificar los documentos a enviar."
+
+#: ../src/yajhfc/console/Main.java:92
+msgid "You cannot both query a job status and specify recipients."
+msgstr "No puede hacer ambas cosas: consultar el estado de un trabajo y especificar destinatarios."
+
+#: ../src/yajhfc/console/Main.java:97
+msgid ""
+"You have to specify at least one recipient or query a job status or use "
+"batch mode."
+msgstr "Debe especificar al menos un destinatario o consultar el estado de un trabajo o usar el modo de procesamiento por lotes."
+
+#: ../src/yajhfc/console/Main.java:102
+msgid "You cannot specify poll mode and have documents to send."
+msgstr "No puede hacer ambas cosas: especificar el modo de transmisión bajo demanda y tener documentos para enviar."
+
+#: ../src/yajhfc/console/Main.java:141
+msgid "Unsupported batch data format"
+msgstr "Formato de datos para procesamiento por lotes no válido"
+
+#: ../src/yajhfc/console/Main.java:168 ../src/yajhfc/console/Main.java:171
+msgid "Line"
+msgstr "Línea"
+
+#: ../src/yajhfc/console/Main.java:168
+msgid "Invalid arguments specified in batch mode:"
+msgstr "Argumentos no válidos especificados en el modo de procesamiento por lotes:"
+
+#: ../src/yajhfc/console/Main.java:171
+msgid "data was"
+msgstr "los datos eran"
+
+#: ../src/yajhfc/console/Main.java:177
+#, java-format
+msgid "Error processing the batch data from \"{0}\":"
+msgstr "Error al procesar los datos por lotes desde \"{0}\":"
+
+#: ../src/yajhfc/console/Main.java:207
+msgid "Error performing the requested operation:"
+msgstr "Error al ejecutar la operación solicitada:"
+
+#: ../src/yajhfc/console/Main.java:224
+msgid "Sending a fax failed, exiting program."
+msgstr "Error al enviar el fax, se sale del programa."
+
+#: ../src/yajhfc/console/Main.java:257
+msgid "Invalid custom property"
+msgstr "Propiedad personalizada no válida"
+
+#: ../src/yajhfc/console/Main.java:271
+msgid "The kill time must be in the future; using default instead."
+msgstr "La hora límite debe estar en el futuro, se usará la predeterminada."
+
+#: ../src/yajhfc/console/Main.java:293
+#, java-format
+msgid "Invalid notification type {0}, using default instead."
+msgstr "Tipo de notificación {0} no válida, se usará la predeterminada."
+
+#: ../src/yajhfc/console/Main.java:305
+#, java-format
+msgid "Invalid paper size {0}, using default instead"
+msgstr "Tamaño de papel {0} no válido, se usará el predeterminado."
+
+#: ../src/yajhfc/console/Main.java:325
+#, java-format
+msgid "Invalid fax resolution {0}, using default instead"
+msgstr "Resolución del fax {0} no válida, se usará la predeterminada."
+
+#: ../src/yajhfc/console/Main.java:345
+msgid "Invalid data specified for fax, exiting program."
+msgstr "Datos especificados para el fax no válidos, se sale del programa."
+
+#: ../src/yajhfc/ui/console/ConsoleYajOptionPane.java:62
+msgid "User name"
+msgstr "Nombre de usuario"
+
+#: ../src/yajhfc/ui/console/ConsoleYajOptionPane.java:72
+msgid "Password for user %s"
+msgstr "Contraseña del usuario %s"
+
