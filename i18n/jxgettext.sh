@@ -4,5 +4,5 @@
 SOURCEDIR=../src
 OUTNAME=Messages
 
-xgettext -k_ --from-code=utf-8 `find $SOURCEDIR -name '*.java'` -o$OUTNAME.po
+find $SOURCEDIR -name '*.java' | xgettext -k_ --from-code=utf-8 -f- -o$OUTNAME.po
 
