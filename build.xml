@@ -1,4 +1,4 @@
-<project name="YajHFC-FOP" default="dist" basedir=".">
+<project name="YajHFC-Console" default="dist" basedir=".">
 	<description>
         YajHFC console application build file
         </description>
@@ -109,12 +109,13 @@
 
 	<target name="sourcedist" depends="init,i18n" description="generate the source distribution" >
 		<zip destfile="${srczip-output}">
-			<zipfileset dir=".">
+			<zipfileset dir="." prefix="yajhfc-console/">
 				<exclude name="bin/"/>
 				<exclude name="build/"/>
 				<exclude name="**/*.jar"/>
 				<exclude name="**/*.log"/>
 				<exclude name="**/*~"/>
+				<exclude name="**/.hg/**"/>
 			</zipfileset>
 			<!-- <zipfileset dir="${src}" prefix="yajhfc/">
 				<include name="doc/faq-src/.latex2html-init"/>
