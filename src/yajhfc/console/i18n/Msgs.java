@@ -31,6 +31,11 @@ import yajhfc.Utils;
  *
  */
 public class Msgs {
+    /**
+     * 
+     */
+    private static final String MESSAGE_BUNDLE_NAME = "yajhfc.console.i18n.Messages";
+    
     private static ResourceBundle msgs = null;
     private static boolean triedMsgLoad = false;
     
@@ -83,7 +88,7 @@ public class Msgs {
                 if (Utils.debugMode) {
                     Logger.getLogger(Msgs.class.getName()).fine("Trying to load messages for language " + myLocale);
                 }
-                msgs = ResourceBundle.getBundle("yajhfc.console.i18n.Messages", myLocale);
+                msgs = ResourceBundle.getBundle(MESSAGE_BUNDLE_NAME, myLocale);
             } catch (Exception e) {
                 Logger.getLogger(Msgs.class.getName()).log(Level.INFO, "Error loading messages for " + myLocale, e);
                 msgs = null;
