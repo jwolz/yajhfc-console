@@ -38,6 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import yajhfc.Utils;
+import yajhfc.file.textextract.RecipientExtractionMode;
 import yajhfc.launch.CommonCommandLineOpts;
 import yajhfc.launch.HelpPrinter;
 import yajhfc.launch.Launcher2;
@@ -228,8 +229,13 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
      */
     public String numberPrefix = null;
     
+    /**
+     * Extract recipients? 
+     */
+    public RecipientExtractionMode extractRecipients = null;
     
-    // max non-char-opt: 23
+    
+    // max non-char-opt: 24
     final static LongOpt[] longOptsOnlyOnce = new LongOpt[] {
             new LongOpt("appendlogfile", LongOpt.REQUIRED_ARGUMENT, null, 1),
             new LongOpt("batch", LongOpt.OPTIONAL_ARGUMENT, null, 'b'),
@@ -260,6 +266,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("comment", LongOpt.REQUIRED_ARGUMENT, null, 10),
             new LongOpt("custom-cover", LongOpt.REQUIRED_ARGUMENT, null, 11),
             new LongOpt("custom-property", LongOpt.REQUIRED_ARGUMENT, null, 'P'),
+            new LongOpt("extract-recipients", LongOpt.OPTIONAL_ARGUMENT, null, 24),
             new LongOpt("from-identity", LongOpt.REQUIRED_ARGUMENT, null, 23),
             new LongOpt("host", LongOpt.REQUIRED_ARGUMENT, null, 'H'),
             new LongOpt("hylafax-encoding", LongOpt.REQUIRED_ARGUMENT, null, 17),
@@ -434,6 +441,23 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
                 break;
             case 'P': //custom-property
                 customProperties.add(getopt.getOptarg());
+                break;
+            case 24: //extract-recipients
+                optarg = getopt.getOptarg();
+                if (optarg == null || optarg.length() == 0) {
+                    extractRecipients = RecipientExtractionMode.YES;
+                } else {
+                    char firstLower = Character.toLowerCase(optarg.charAt(0));
+                    if (firstLower == 'y' || 
+                            optarg.equals("1")) {
+                        extractRecipients = RecipientExtractionMode.YES;
+                    } else if (firstLower == 'n' || 
+                            optarg.equals("0")) {
+                        extractRecipients = RecipientExtractionMode.NO;
+                    } else {
+                        System.err.println("Unknown option specified for extract-recipients: " + optarg);
+                    }
+                }
                 break;
             case 23: // from-identity
                 fromIdentity = getopt.getOptarg();
@@ -649,7 +673,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     }
     
     public boolean isSendAction() {
-    	return (poll || recipients.size() > 0 || queryJobStatus.size() > 0);
+    	return (poll || recipients.size() > 0 || queryJobStatus.size() > 0 || fileNames.size() > 0 || stdin);
     }
     
     public boolean isCustomServerOptions() {
