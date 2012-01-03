@@ -376,3 +376,11 @@ msgstr "Sets fields of the sender identity used by the cover page. The format of
 # Untranslated text: IDENTITY-SPEC
 msgid "from-identity-arg"
 msgstr "IDENTITY-SPEC"
+
+# DO NOT translate!
+msgid "extract-recipients-arg"
+msgstr "yes|no"
+
+# Untranslated text: Extract recipients from the specified files or stdin by searching for @@recipient:<faxnumber>@@ tags.
+msgid "extract-recipients-desc"
+msgstr "Extract recipients from the specified files or stdin by searching for @@recipient:<faxnumber>@@ tags."

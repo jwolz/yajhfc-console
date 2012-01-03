@@ -17,6 +17,7 @@
  */
 package yajhfc.console;
 
+import static yajhfc.console.i18n.Msgs._;
 import gnu.hylafax.HylaFAXClient;
 import gnu.hylafax.Job;
 import gnu.inet.ftp.ServerResponseException;
@@ -41,6 +42,8 @@ import yajhfc.IDAndNameOptions;
 import yajhfc.PaperSize;
 import yajhfc.SenderIdentity;
 import yajhfc.Utils;
+import yajhfc.file.textextract.FaxnumberExtractor;
+import yajhfc.file.textextract.RecipientExtractionMode;
 import yajhfc.launch.Launcher2;
 import yajhfc.phonebook.convrules.DefaultPBEntryFieldContainer;
 import yajhfc.plugin.PluginManager;
@@ -55,8 +58,6 @@ import yajhfc.ui.YajOptionPane;
 import yajhfc.ui.console.ConsoleIO;
 import yajhfc.ui.console.ConsoleProgressUI;
 import yajhfc.util.ExternalProcessExecutor;
-
-import static yajhfc.console.i18n.Msgs._;
 
 /**
  * @author jonas
@@ -107,7 +108,7 @@ public class Main {
                 return false;
             }
         } else {
-            if (opts.recipients.size() == 0) {
+            if (opts.recipients.size() == 0 && opts.extractRecipients != RecipientExtractionMode.YES) {
                 printError(caption + " " + _("You have to specify at least one recipient or query a job status or use batch mode."));
                 return false;
             }
@@ -300,7 +301,7 @@ public class Main {
             identity = new SenderIdentity(identity);
             DefaultPBEntryFieldContainer.parseStringToPBEntryFieldContainer(identity, opts.fromIdentity);
         }
-        sendController.setFromIdentity(identity);
+        sendController.setIdentity(identity);
         
         if (opts.archiveJob != null) 
             sendController.setArchiveJob(opts.archiveJob.booleanValue());
@@ -309,7 +310,7 @@ public class Main {
         if (opts.useCover != null) 
             sendController.setUseCover(opts.useCover.booleanValue());
         if (opts.comment != null)
-            sendController.setComments(opts.comment);
+            sendController.setComment(opts.comment);
         if (opts.customCover != null) {
             sendController.setCustomCover(new File(opts.customCover));
         }
@@ -371,8 +372,6 @@ public class Main {
             }
         }
         
-        DefaultPBEntryFieldContainer.parseCmdLineStrings(sendController.getNumbers(), opts.recipients);
-        
         if (opts.resolution != null) {
             String r = opts.resolution.trim().toUpperCase(Locale.ENGLISH);
             try {
@@ -396,6 +395,19 @@ public class Main {
         }
         if (opts.subject != null)
             sendController.setSubject(opts.subject);
+        
+        // n.b.: All documents should have been added at this point
+        if ((opts.extractRecipients == RecipientExtractionMode.YES)
+                || (opts.extractRecipients == RecipientExtractionMode.AUTO)) {
+            try {
+                FaxnumberExtractor extractor = new FaxnumberExtractor();
+                extractor.extractFromMultipleDocuments(sendController.getFiles(), opts.recipients);
+            } catch (Exception e) {
+                log.log(Level.WARNING, "Error extracting recipients", e);
+            }
+        }
+        
+        DefaultPBEntryFieldContainer.parseCmdLineStrings(sendController.getNumbers(), opts.recipients);
         
         if (sendController.validateEntries()) {
             sendController.sendFax();
