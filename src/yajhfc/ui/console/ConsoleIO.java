@@ -85,13 +85,38 @@ public abstract class ConsoleIO {
      */
     protected int verbosity = VERBOSITY_NORMAL;
     
+    private static boolean isPropertyTrue(String propName) {
+        String value = System.getProperty(propName);
+        if (value != null) {
+            if ("true".equals(value) || "yes".equals(value))
+                return true;
+            if ("false".equals(value) || "no".equals(value))
+                return false;
+            
+            int i_val = 0;
+            try {
+                i_val = Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                System.err.println("Error parsing " + propName + ":");
+                e.printStackTrace();
+            }
+            return (i_val != 0);
+        } else {
+            return false;
+        }
+    }
+    
     public static ConsoleIO getDefault() {
         if (DEFAULT == null) {
-            Console cons = System.console();
-            if (cons == null) {
+            if (isPropertyTrue("yajhfc.ui.console.ConsoleIO.forceStreamConsoleIO")) {
                 DEFAULT = new StreamConsoleIO();
             } else {
-                DEFAULT = new ConsoleConsoleIO(cons);
+                Console cons = System.console();
+                if (cons == null) {
+                    DEFAULT = new StreamConsoleIO();
+                } else {
+                    DEFAULT = new ConsoleConsoleIO(cons);
+                }
             }
         }
         return DEFAULT;
