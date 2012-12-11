@@ -1,7 +1,7 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>console</headerType>
-  <jar>yajhfc-console.jar</jar>
+  <jar></jar>
   <outfile>build/cyajhfc.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
@@ -13,6 +13,10 @@
   <stayAlive>true</stayAlive>
   <manifest></manifest>
   <icon></icon>
+  <classPath>
+    <mainClass>yajhfc.console.Main</mainClass>
+    <cp>%EXEDIR%\yajhfc-console.jar;%EXEDIR%\yajhfc.jar;%EXEDIR%\lib\*.jar</cp>
+  </classPath>
   <jre>
     <path></path>
     <minVersion>1.6.0</minVersion>
