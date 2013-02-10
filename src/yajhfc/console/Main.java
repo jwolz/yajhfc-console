@@ -26,14 +26,19 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import yajhfc.FaxNotification;
 import yajhfc.FaxResolution;
@@ -50,6 +55,9 @@ import yajhfc.plugin.PluginManager;
 import yajhfc.send.LocalFileTFLItem;
 import yajhfc.send.SendController;
 import yajhfc.send.SendControllerListener;
+import yajhfc.send.SendControllerMailer;
+import yajhfc.send.SendControllerMailer.MailException;
+import yajhfc.send.SendFaxArchiver;
 import yajhfc.send.StreamTFLItem;
 import yajhfc.server.Server;
 import yajhfc.server.ServerManager;
@@ -91,6 +99,15 @@ public class Main {
             return false;
         }
         
+        if (opts.successDir != null && (!new File(opts.successDir).isDirectory())) {
+            printError("success-dir " + opts.successDir + ": " + _("Does not exist or is not a directory."));
+            return false;
+        }
+        if (opts.errorDir != null && (!new File(opts.errorDir).isDirectory())) {
+            printError("error-dir " + opts.errorDir + ": " + _("Does not exist or is not a directory."));
+            return false;
+        }
+        
         if (!opts.isBatch() || opts.isSendAction())
         	return validatePerJobCommandLineOpts(opts, _("Invalid command line arguments:"));
         else 
@@ -119,6 +136,10 @@ public class Main {
                 }
             } 
         }
+        if (opts.mailRecipients && !SendControllerMailer.isAvailable()) {
+            printError(_("enable-mail-recipients specified, but plugin to send mails is not installed,"));
+            return false;
+        }
         return true;
     }
     
@@ -136,7 +157,7 @@ public class Main {
         ConsoleIO.getDefault().setVerbosity(opts.verbosity);
         
         PluginManager.initializeAllKnownPlugins(PluginManager.STARTUP_MODE_CONSOLE); 
-
+        
         if (!validateCommandLineOpts(opts)) {
             System.exit(EXIT_CODE_WRONG_PARAMETERS);
         }
@@ -269,24 +290,34 @@ public class Main {
         }
     }
 
-    protected static void sendFax(Server server, ConsCommandLineOpts opts)
+
+    
+    
+    protected static void sendFax(final Server server, final ConsCommandLineOpts opts)
             throws IOException, FileNotFoundException {
         
-        ConsoleProgressUI progressUI = new ConsoleProgressUI();
-        YajOptionPane dialogs = Launcher2.application.getDialogUI();
+        final ConsoleProgressUI progressUI = new ConsoleProgressUI();
+        final YajOptionPane dialogs = Launcher2.application.getDialogUI();
     
-        SendController sendController = new SendController(server, dialogs, opts.poll, progressUI);
+        final SendController sendController = new SendController(server, dialogs, opts.poll, progressUI);
         sendController.addSendControllerListener(new SendControllerListener() {
            public void sendOperationComplete(boolean success) {
         	   if (success) {
         		   faxLock.release();
+        		   ConsoleIO.getDefault().setLogFileWriter(null);
         	   } else {
                    printError(_("Sending a fax failed, exiting program."));
                    System.exit(EXIT_CODE_SEND_FAX_FAILED);
         	   }
            } 
         });
-
+        SendFaxArchiver archiver = null;
+        if (opts.successDir != null || opts.errorDir != null) {
+            final StringWriter logger = new StringWriter();
+            ConsoleIO.getDefault().setLogFileWriter(logger);
+            archiver = new SendFaxArchiver(sendController, dialogs, opts.successDir, opts.errorDir, logger);
+        } 
+        
         SenderIdentity identity;
         if (opts.identity != null) {
             identity = IDAndNameOptions.getItemFromCommandLineCoding(Utils.getFaxOptions().identities, opts.identity);
@@ -309,8 +340,15 @@ public class Main {
             sendController.getFiles().add(new StreamTFLItem(System.in, null));
         if (opts.useCover != null) 
             sendController.setUseCover(opts.useCover.booleanValue());
-        if (opts.comment != null)
-            sendController.setComment(opts.comment);
+        if (opts.comment != null) {
+            if (opts.comment.startsWith("@")) {
+                FileReader fr = new FileReader(opts.comment.substring(1));
+                sendController.setComment(Utils.readFully(fr));
+                fr.close();
+            } else {
+                sendController.setComment(opts.comment);
+            }
+        }
         if (opts.customCover != null) {
             sendController.setCustomCover(new File(opts.customCover));
         }
@@ -397,30 +435,61 @@ public class Main {
             sendController.setSubject(opts.subject);
         
         // n.b.: All documents should have been added at this point
+        List<String> mailRecipients = null;
         if ((opts.extractRecipients == RecipientExtractionMode.YES)
                 || (opts.extractRecipients == RecipientExtractionMode.AUTO)) {
             try {
-                FaxnumberExtractor extractor = new FaxnumberExtractor();
-                extractor.extractFromMultipleDocuments(sendController.getFiles(), opts.recipients);
+                int num;
+                if (opts.mailRecipients) {
+                    mailRecipients = new ArrayList<String>();
+                    FaxnumberExtractor extractor = new FaxnumberExtractor(FaxnumberExtractor.getDefaultPattern(), SendControllerMailer.getDefaultMailPattern());
+                    num = extractor.extractFromMultipleDocuments(sendController.getFiles(), opts.recipients, mailRecipients);
+                } else {
+                    FaxnumberExtractor extractor = new FaxnumberExtractor();
+                    num = extractor.extractFromMultipleDocuments(sendController.getFiles(), opts.recipients);
+                }
+                if (num == 0) {
+                    printError(_("Warning: No recipients could be found in the specified documents."));
+                }
             } catch (Exception e) {
                 log.log(Level.WARNING, "Error extracting recipients", e);
             }
         }
         
-        DefaultPBEntryFieldContainer.parseCmdLineStrings(sendController.getNumbers(), opts.recipients);
-        
-        if (sendController.validateEntries()) {
-            sendController.sendFax();
-            
-	        try {
-				faxLock.acquire();
-			} catch (InterruptedException e) {
-				log.log(Level.SEVERE, "Error waiting for fax to be sent", e);
-				System.exit(EXIT_CODE_GENERAL_FAILURE);
-			}
-        } else {
-        	printError(_("Invalid data specified for fax, exiting program."));
-        	System.exit(EXIT_CODE_WRONG_PARAMETERS);
+        if (opts.recipients.size() == 0 && (!opts.mailRecipients || opts.mailRecipients && mailRecipients.size()==0)) {
+            printError(_("No recipients specified for fax, exiting program."));
+            if (archiver != null)
+                archiver.saveFaxAsError();
+            System.exit(EXIT_CODE_WRONG_PARAMETERS);
+        }
+        if (opts.mailRecipients && mailRecipients.size()>0) {
+            if (SendControllerMailer.INSTANCE != null)
+                try {
+                    SendControllerMailer.INSTANCE.mailToRecipients(sendController, mailRecipients);
+                } catch (MailException e) {
+                    dialogs.showExceptionDialog("Error sending mail to " + mailRecipients, e);
+                }
+            else
+                printError("Cannot send mail: SendControllerMailer not available!");
+        }
+        if (opts.recipients.size() > 0) {
+            DefaultPBEntryFieldContainer.parseCmdLineStrings(sendController.getNumbers(), opts.recipients);
+
+            if (sendController.validateEntries()) {
+                sendController.sendFax();
+
+                try {
+                    faxLock.acquire();
+                } catch (InterruptedException e) {
+                    log.log(Level.SEVERE, "Error waiting for fax to be sent", e);
+                    System.exit(EXIT_CODE_GENERAL_FAILURE);
+                }
+            } else {
+                printError(_("Invalid data specified for fax, exiting program."));
+                if (archiver != null)
+                    archiver.saveFaxAsError();
+                System.exit(EXIT_CODE_WRONG_PARAMETERS);
+            }
         }
     }
 

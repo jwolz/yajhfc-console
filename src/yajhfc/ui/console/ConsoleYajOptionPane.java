@@ -53,6 +53,23 @@ public class ConsoleYajOptionPane extends YajOptionPane {
     }
 
     /* (non-Javadoc)
+     * @see yajhfc.ui.YajOptionPane#showExceptionDialog(java.lang.String, java.lang.Exception, int)
+     */
+    @Override
+    public void showExceptionDialog(String message, Exception exc, int timeout) {
+        showExceptionDialog(message, exc);
+    }
+    
+    /* (non-Javadoc)
+     * @see yajhfc.ui.YajOptionPane#showExceptionDialog(java.lang.String, java.lang.String, java.lang.Exception, int)
+     */
+    @Override
+    public void showExceptionDialog(String title, String message,
+            Exception exc, int timeout) {
+        showExceptionDialog(title, message, exc);
+    }
+    
+    /* (non-Javadoc)
      * @see yajhfc.ui.YajOptionPane#showPasswordDialog(java.lang.String, java.lang.String, java.lang.String, boolean)
      */
     @Override

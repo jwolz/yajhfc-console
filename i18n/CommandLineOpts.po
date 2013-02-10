@@ -159,7 +159,7 @@ msgstr "yes|no"
 
 # Untranslated text: The comment for the cover page.
 msgid "comment-desc"
-msgstr "The comment for the cover page."
+msgstr "The comment for the cover page. You can read the comment from a file by specifying \"@filename\" here."
 
 # Untranslated text: COMMENT
 msgid "comment-arg"

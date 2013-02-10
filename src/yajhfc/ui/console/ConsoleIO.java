@@ -19,6 +19,7 @@ package yajhfc.ui.console;
 
 import java.io.Console;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,6 +86,19 @@ public abstract class ConsoleIO {
      */
     protected int verbosity = VERBOSITY_NORMAL;
     
+    /**
+     * A writer writing to a log file
+     */
+    protected Writer logFileWriter = null;
+    /**
+     * The writer returned by writer()
+     */
+    protected PrintWriter outputWriter = null;
+    /**
+     * The writer return by errWriter()
+     */
+    protected PrintWriter outputErrWriter = null;
+    
     private static boolean isPropertyTrue(String propName) {
         String value = System.getProperty(propName);
         if (value != null) {
@@ -127,17 +141,52 @@ public abstract class ConsoleIO {
 
     public abstract String readPassword(String fmt, Object... args);
 
+    
+    private PrintWriter wrapWriter(Writer w) {
+        if (logFileWriter == null) {
+            if (w instanceof PrintWriter) {
+                return (PrintWriter)w;
+            } else {
+                return new PrintWriter(w, true);
+            }
+        } else {
+            return new PrintWriter(new CopyWriter(w, logFileWriter), true);
+        }
+    }
+    
     /**
      * Returns a PrintWriter writing to stdout
      * @return
      */
-    public abstract PrintWriter writer();
+    public PrintWriter writer() {
+        if (outputWriter == null) {
+            outputWriter = wrapWriter(getWriter());
+        }
+        return outputWriter;
+    }
     
     /**
      * Returns a PrintWriter writing to stderr
      * @return
      */
-    public abstract PrintWriter errWriter();
+    public PrintWriter errWriter() {
+        if (outputErrWriter == null) {
+            outputErrWriter = wrapWriter(getErrorWriter());
+        }
+        return outputErrWriter;
+    }
+    
+    /**
+     * Returns a Writer writing to stdout
+     * @return
+     */
+    protected abstract Writer getWriter();
+    
+    /**
+     * Returns a Writer writing to stderr
+     * @return
+     */
+    protected abstract Writer getErrorWriter();
     
     public int getVerbosity() {
         return verbosity;
@@ -156,7 +205,7 @@ public abstract class ConsoleIO {
         if (log.isLoggable(Level.FINE))
             log.fine("printf(" + priority + ", " + format + ", " + Arrays.toString(args) + ")");
         if (priority >= verbosity)
-            printfImpl(format, args);
+            errWriter().printf(format, args);
     }
     
     /**
@@ -169,7 +218,7 @@ public abstract class ConsoleIO {
         if (log.isLoggable(Level.FINE))
             log.fine("print(" + priority + ", " + text + ")");
         if (priority >= verbosity)
-            printImpl(text);
+            errWriter().print(text);
     }
     
     /**
@@ -182,13 +231,26 @@ public abstract class ConsoleIO {
         if (log.isLoggable(Level.FINE))
             log.fine("println(" + priority + ", " + text + ")");
         if (priority >= verbosity)
-            printlnImpl(text);
+            errWriter().println(text);
     }
     
+    /**
+     * Sets a writer to which a copy of all output is written.
+     * 
+     * @param logFileWriter the logFileWriter to set
+     */
+    public void setLogFileWriter(Writer logFileWriter) {
+        if (this.logFileWriter != logFileWriter) {
+            this.logFileWriter = logFileWriter;
+            this.outputErrWriter = null;
+            this.outputErrWriter = null;
+        }
+    }
     
-    protected abstract void printfImpl(String format, Object[] args);
-
-    protected abstract void printImpl(String text);
-    
-    protected abstract void printlnImpl(String text);
+    /**
+     * @return the logFileWriter
+     */
+    public Writer getLogFileWriter() {
+        return logFileWriter;
+    }
 }
