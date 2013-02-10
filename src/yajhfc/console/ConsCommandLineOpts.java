@@ -234,14 +234,29 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
      */
     public RecipientExtractionMode extractRecipients = null;
     
+    /**
+     * Directory to write sucessfully sent faxes to
+     */
+    public String successDir = null;
     
-    // max non-char-opt: 24
+    /**
+     * Directory to write faxes that could not be submitted to
+     */
+    public String errorDir = null;
+    
+    /**
+     * Support @@mailrecipient ...@@ tags for --extract-recipients
+     */
+    public boolean mailRecipients = false;
+    
+    // max non-char-opt: 27
     final static LongOpt[] longOptsOnlyOnce = new LongOpt[] {
             new LongOpt("appendlogfile", LongOpt.REQUIRED_ARGUMENT, null, 1),
             new LongOpt("batch", LongOpt.OPTIONAL_ARGUMENT, null, 'b'),
             new LongOpt("batch-format", LongOpt.REQUIRED_ARGUMENT, null, 13),
             new LongOpt("configdir", LongOpt.REQUIRED_ARGUMENT, null, 'c'),
             new LongOpt("debug", LongOpt.NO_ARGUMENT, null, 'd'),
+            new LongOpt("error-dir", LongOpt.REQUIRED_ARGUMENT, null, 26),
             new LongOpt("help", LongOpt.OPTIONAL_ARGUMENT, null, 'h'),
             new LongOpt("loaddriver", LongOpt.REQUIRED_ARGUMENT, null, 3),
             new LongOpt("loadplugin", LongOpt.REQUIRED_ARGUMENT, null, 4),
@@ -252,6 +267,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("print-jobids", LongOpt.OPTIONAL_ARGUMENT, null, 7),
             new LongOpt("quiet", LongOpt.NO_ARGUMENT, null, 'q'),
             new LongOpt("stdin", LongOpt.NO_ARGUMENT, null, 8),
+            new LongOpt("success-dir", LongOpt.REQUIRED_ARGUMENT, null, 25),
             new LongOpt("verbose", LongOpt.NO_ARGUMENT, null, 'v'),
             new LongOpt("version", LongOpt.NO_ARGUMENT, null, 15),
             new LongOpt("Xprint-manpage", LongOpt.NO_ARGUMENT, null, -3),
@@ -266,6 +282,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("comment", LongOpt.REQUIRED_ARGUMENT, null, 10),
             new LongOpt("custom-cover", LongOpt.REQUIRED_ARGUMENT, null, 11),
             new LongOpt("custom-property", LongOpt.REQUIRED_ARGUMENT, null, 'P'),
+            new LongOpt("enable-mail-recipients", LongOpt.NO_ARGUMENT, null, 27),
             new LongOpt("extract-recipients", LongOpt.OPTIONAL_ARGUMENT, null, 24),
             new LongOpt("from-identity", LongOpt.REQUIRED_ARGUMENT, null, 23),
             new LongOpt("host", LongOpt.REQUIRED_ARGUMENT, null, 'H'),
@@ -442,6 +459,12 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             case 'P': //custom-property
                 customProperties.add(getopt.getOptarg());
                 break;
+            case 26: //error-dir
+                errorDir = getopt.getOptarg();
+                break;
+            case 27: //enable-mail-recipients
+                mailRecipients = true;
+                break;
             case 24: //extract-recipients
                 optarg = getopt.getOptarg();
                 if (optarg == null || optarg.length() == 0) {
@@ -529,6 +552,9 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
                 break;
             case 's': // subject
                 subject = getopt.getOptarg();
+                break;
+            case 25: //success-dir
+                successDir = getopt.getOptarg();
                 break;
             case 'C': // use-cover
                 useCover = parseOptionalBoolean(getopt.getOptarg());

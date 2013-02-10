@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Writer;
 
 /**
  * ConsoleIO implementation using System.in/out/err
@@ -34,11 +35,6 @@ public class StreamConsoleIO extends ConsoleIO {
     protected final PrintWriter errWriter;
     protected final BufferedReader reader;
     
-    @Override
-    public void printfImpl(String format, Object[] args) {
-        writer.format(format, args);
-    }
-
     @Override
     public String readLine(String fmt, Object... args) {
         writer.format(fmt, args);
@@ -54,23 +50,19 @@ public class StreamConsoleIO extends ConsoleIO {
         return readLine(fmt, args);
     }
 
+    /* (non-Javadoc)
+     * @see yajhfc.ui.console.ConsoleIO#getWriter()
+     */
     @Override
-    public PrintWriter writer() {
+    protected Writer getWriter() {
         return writer;
     }
 
+    /* (non-Javadoc)
+     * @see yajhfc.ui.console.ConsoleIO#getErrorWriter()
+     */
     @Override
-    public void printImpl(String text) {
-        errWriter.print(text);
-    }
-    
-    @Override
-    public void printlnImpl(String text) {
-        errWriter.println(text);
-    }
-    
-    @Override
-    public PrintWriter errWriter() {
+    protected Writer getErrorWriter() {
         return errWriter;
     }
     

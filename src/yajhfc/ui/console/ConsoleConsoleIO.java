@@ -21,6 +21,7 @@ import java.io.Console;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
@@ -35,7 +36,7 @@ import java.util.logging.Logger;
 //!!! IMPORTANT: Do not use yajhfc.Utils in here !!!
 public class ConsoleConsoleIO extends ConsoleIO {
     protected final Console console;
-    protected final PrintWriter errWriter;
+    protected final Writer errWriter;
 
     public String readLine(String fmt, Object... args) {
         return console.readLine(fmt, args);
@@ -44,27 +45,20 @@ public class ConsoleConsoleIO extends ConsoleIO {
     public String readPassword(String fmt, Object... args) {
         return new String(console.readPassword(fmt, args));
     }
-
-    public PrintWriter writer() {
+    
+    /* (non-Javadoc)
+     * @see yajhfc.ui.console.ConsoleIO#getWriter()
+     */
+    @Override
+    protected Writer getWriter() {
         return console.writer();
     }
 
-    public void printfImpl(String format, Object[] args) {
-        errWriter.printf(format, args);
-    }
-    
+    /* (non-Javadoc)
+     * @see yajhfc.ui.console.ConsoleIO#getErrorWriter()
+     */
     @Override
-    public void printImpl(String text) {
-        errWriter.print(text);
-    }
-    
-    @Override
-    public void printlnImpl(String text) {
-        errWriter.println(text);
-    }
-    
-    @Override
-    public PrintWriter errWriter() {
+    protected Writer getErrorWriter() {
         return errWriter;
     }
     
@@ -90,13 +84,12 @@ public class ConsoleConsoleIO extends ConsoleIO {
         } 
     }
     
-    
     public ConsoleConsoleIO(Console console) {
         super();
         this.console = console;
-        PrintWriter err;
+        Writer err;
         try {
-            err = new PrintWriter(new OutputStreamWriter(System.err, findEncoding(console)), true);
+            err = new OutputStreamWriter(System.err, findEncoding(console));
         } catch (UnsupportedEncodingException e) {
             Logger.getLogger(ConsoleConsoleIO.class.getName()).log(Level.SEVERE, "Unsupported encoding??", e);
             err = console.writer();
