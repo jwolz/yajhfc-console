@@ -15,10 +15,14 @@ for PO in ${OUTNAME}_*.po ; do
 done
 
 # Create a template without translations:
-CLO_TMP=CommandLineOpts.po.tmp
-perl maketemplate.pl < CommandLineOpts.po > $CLO_TMP
-for PO in CommandLineOpts_*.po ; do
-	echo $PO
-	msgmerge -N -U $PO $CLO_TMP
-done
-rm -f $CLO_TMP
+#CLO_TMP=CommandLineOpts.po.tmp
+#perl maketemplate.pl < CommandLineOpts.po > $CLO_TMP
+#for PO in CommandLineOpts_*.po ; do
+#	echo $PO
+#	msgmerge -N -U $PO $CLO_TMP
+#done
+#rm -f $CLO_TMP
+
+echo 'Creating & Merging CommandLineOpts.pot...'
+java -cp ../bin:../../yajhfc/bin yajhfc.console.Main --Xprint-po-template=CommandLineOpts.pot
+msgmerge -N -U CommandLineOpts.po CommandLineOpts.pot

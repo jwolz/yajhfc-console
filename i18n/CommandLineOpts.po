@@ -65,6 +65,26 @@ msgstr "DIRECTORY"
 msgid "debug-desc"
 msgstr "Output some debugging information."
 
+# Untranslated text:
+msgid "error-dir-desc"
+msgstr ""
+"Saves faxes that could not be successfully submitted to HylaFAX in the specified directory.\n"
+"NOTE: This does *not* include faxes that failed to send *after* they have been submitted to HylaFAX (e.g. if the recipient's fax number was wrong),"
+
+# Untranslated text:
+msgid "error-dir-arg"
+msgstr "DIRECTORY"
+
+# Untranslated text:
+msgid "error-mail-desc"
+msgstr ""
+"Sents faxes that could not be successfully submitted to HylaFAX to the specified e-mail address.\n"
+"NOTE: This does *not* include faxes that failed to send *after* they have been submitted to HylaFAX (e.g. if the recipient's fax number was wrong),"
+
+# Untranslated text:
+msgid "error-mail-arg"
+msgstr "EMAIL-ADDRESS"
+
 # Untranslated text: Displays this text.
 msgid "help-desc"
 msgstr "Displays this text (formatted for COLUMNS columns if given)."
@@ -129,6 +149,16 @@ msgstr "Print less messages. You can specify this multiple times to be more quie
 msgid "stdin-desc"
 msgstr "Read the file to send from standard input."
 
+# Untranslated text:
+msgid "success-dir-desc"
+msgstr ""
+"Saves faxes that were successfully submitted to HylaFAX in the specified directory.\n"
+"NOTE: This does *not* mean the fax has been sent successfully, only it has been accepted by HylaFAX for further processing (e.g. if the recipient's fax number was wrong, the fax can still fail),"
+
+# Untranslated text:
+msgid "success-dir-arg"
+msgstr "DIRECTORY"
+
 # Untranslated text: Print more messages. You can specify this multiple times to be more verbose.
 msgid "verbose-desc"
 msgstr "Print more messages. You can specify this multiple times to be more verbose."
@@ -180,6 +210,26 @@ msgstr "Sets a custom HylaFAX property (JPARM) for this fax job. To set multiple
 # Untranslated text: KEY=VALUE
 msgid "custom-property-arg"
 msgstr "KEY=VALUE"
+
+# Untranslated text:
+msgid "enable-mail-recipients-desc"
+msgstr "Allows the usage of @@mailrecipient@@ tags in the specified documents. To these recipients e-mail is sent instead of faxes. Only works if the mail plugin is installed."
+
+# Untranslated text: Extract recipients from the specified files or stdin by searching for @@recipient:<faxnumber>@@ tags.
+msgid "extract-recipients-desc"
+msgstr "Extract recipients from the specified files or stdin by searching for @@recipient:<faxnumber>@@ tags."
+
+# DO NOT translate!
+msgid "extract-recipients-arg"
+msgstr "yes|no"
+
+# Untranslated text: Sets fields of the sender identity used by the cover page. The format of the argument is the same as for --recipient. Fields not specified in the argument string use the values of the current identity (i.e. the identity selected by --identity is used as a template).
+msgid "from-identity-desc"
+msgstr "Sets fields of the sender identity used by the cover page. The format of the argument is the same as for --recipient. Fields not specified in the argument string use the values of the current identity (i.e. the identity selected by --identity is used as a template)."
+
+# Untranslated text: IDENTITY-SPEC
+msgid "from-identity-arg"
+msgstr "IDENTITY-SPEC"
 
 # Untranslated text: Specifies the host name of the HylaFAX server to connect to.
 msgid "host-desc"
@@ -369,18 +419,3 @@ msgstr "Specifies the user name to log into the HylaFAX server."
 msgid "user-arg"
 msgstr "USERNAME"
 
-# Untranslated text: Sets fields of the sender identity used by the cover page. The format of the argument is the same as for --recipient. Fields not specified in the argument string use the values of the current identity (i.e. the identity selected by --identity is used as a template).
-msgid "from-identity-desc"
-msgstr "Sets fields of the sender identity used by the cover page. The format of the argument is the same as for --recipient. Fields not specified in the argument string use the values of the current identity (i.e. the identity selected by --identity is used as a template)." 
-
-# Untranslated text: IDENTITY-SPEC
-msgid "from-identity-arg"
-msgstr "IDENTITY-SPEC"
-
-# DO NOT translate!
-msgid "extract-recipients-arg"
-msgstr "yes|no"
-
-# Untranslated text: Extract recipients from the specified files or stdin by searching for @@recipient:<faxnumber>@@ tags.
-msgid "extract-recipients-desc"
-msgstr "Extract recipients from the specified files or stdin by searching for @@recipient:<faxnumber>@@ tags."

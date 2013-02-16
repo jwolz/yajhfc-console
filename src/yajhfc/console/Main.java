@@ -162,7 +162,7 @@ public class Main {
             System.exit(EXIT_CODE_WRONG_PARAMETERS);
         }
         if (opts.isSendAction()) {
-        	processCommandLineForJob(opts);
+        	processCommandLineForJob(opts, opts);
         }
 		if (opts.isBatch()) {
 			processBatch(opts);
@@ -209,7 +209,7 @@ public class Main {
 				jobOpts.parse(args, true);
 				
 				if (validatePerJobCommandLineOpts(jobOpts, _("Line") + " " + lineNum + ": " + _("Invalid arguments specified in batch mode:"))) {
-					processCommandLineForJob(jobOpts);
+					processCommandLineForJob(jobOpts, opts);
 				} else {
 					printError( _("Line") + " " + lineNum + " " + _("data was") + ": " + line);
 					System.exit(EXIT_CODE_WRONG_BATCH_DATA);
@@ -254,7 +254,12 @@ public class Main {
     	}
     }
 
-    protected static void processCommandLineForJob(ConsCommandLineOpts opts) {
+    /**
+     * Processes command line options for this fax job
+     * @param opts the options for this job
+     * @param globalOpts the globally set options (may be identical to opts)
+     */
+    protected static void processCommandLineForJob(ConsCommandLineOpts opts, ConsCommandLineOpts globalOpts) {
         YajOptionPane dialogs = Launcher2.application.getDialogUI();
         
         try {            
@@ -280,9 +285,9 @@ public class Main {
             }
             
             if (opts.queryJobStatus.size() > 0) {
-                queryJobState(server, opts);
+                queryJobState(server, opts, globalOpts);
             } else {
-                sendFax(server, opts);
+                sendFax(server, opts, globalOpts);
             }
         } catch (Exception ex) {
             dialogs.showExceptionDialog(_("Error performing the requested operation:"), ex);
@@ -293,7 +298,7 @@ public class Main {
 
     
     
-    protected static void sendFax(final Server server, final ConsCommandLineOpts opts)
+    protected static void sendFax(final Server server, final ConsCommandLineOpts opts, final ConsCommandLineOpts globalOpts)
             throws IOException, FileNotFoundException {
         
         final ConsoleProgressUI progressUI = new ConsoleProgressUI();
@@ -312,10 +317,10 @@ public class Main {
            } 
         });
         SendFaxArchiver archiver = null;
-        if (opts.successDir != null || opts.errorDir != null) {
+        if (globalOpts.successDir != null || globalOpts.errorDir != null || globalOpts.errorMail != null) {
             final StringWriter logger = new StringWriter();
             ConsoleIO.getDefault().setLogFileWriter(logger);
-            archiver = new SendFaxArchiver(sendController, dialogs, opts.successDir, opts.errorDir, logger);
+            archiver = new SendFaxArchiver(sendController, dialogs, globalOpts.successDir, globalOpts.errorDir, globalOpts.errorMail, logger);
         } 
         
         SenderIdentity identity;
@@ -493,7 +498,7 @@ public class Main {
         }
     }
 
-    protected static void queryJobState(Server server, ConsCommandLineOpts opts)
+    protected static void queryJobState(Server server, ConsCommandLineOpts opts, final ConsCommandLineOpts globalOpts)
             throws IOException, FileNotFoundException, ServerResponseException {
         YajOptionPane dialogs = Launcher2.application.getDialogUI();
         

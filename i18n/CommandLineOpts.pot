@@ -61,6 +61,22 @@ msgid "debug-desc"
 msgstr ""
 
 # Untranslated text: 
+msgid "error-dir-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "error-dir-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "error-mail-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "error-mail-arg"
+msgstr ""
+
+# Untranslated text: 
 msgid "help-desc"
 msgstr ""
 
@@ -125,6 +141,14 @@ msgid "stdin-desc"
 msgstr ""
 
 # Untranslated text: 
+msgid "success-dir-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "success-dir-arg"
+msgstr ""
+
+# Untranslated text: 
 msgid "verbose-desc"
 msgstr ""
 
@@ -174,6 +198,26 @@ msgstr ""
 
 # Untranslated text: 
 msgid "custom-property-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "enable-mail-recipients-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "extract-recipients-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "extract-recipients-arg"
+msgstr ""
+
+# Untranslated text: 
+msgid "from-identity-desc"
+msgstr ""
+
+# Untranslated text: 
+msgid "from-identity-arg"
 msgstr ""
 
 # Untranslated text: 
