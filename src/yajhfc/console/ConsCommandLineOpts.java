@@ -245,11 +245,16 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     public String errorDir = null;
     
     /**
+     * Recipient to send faxes that could not be submitted to
+     */
+    public String errorMail = null;
+    
+    /**
      * Support @@mailrecipient ...@@ tags for --extract-recipients
      */
     public boolean mailRecipients = false;
     
-    // max non-char-opt: 27
+    // max non-char-opt: 28
     final static LongOpt[] longOptsOnlyOnce = new LongOpt[] {
             new LongOpt("appendlogfile", LongOpt.REQUIRED_ARGUMENT, null, 1),
             new LongOpt("batch", LongOpt.OPTIONAL_ARGUMENT, null, 'b'),
@@ -257,6 +262,7 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
             new LongOpt("configdir", LongOpt.REQUIRED_ARGUMENT, null, 'c'),
             new LongOpt("debug", LongOpt.NO_ARGUMENT, null, 'd'),
             new LongOpt("error-dir", LongOpt.REQUIRED_ARGUMENT, null, 26),
+            new LongOpt("error-mail", LongOpt.REQUIRED_ARGUMENT, null, 28),
             new LongOpt("help", LongOpt.OPTIONAL_ARGUMENT, null, 'h'),
             new LongOpt("loaddriver", LongOpt.REQUIRED_ARGUMENT, null, 3),
             new LongOpt("loadplugin", LongOpt.REQUIRED_ARGUMENT, null, 4),
@@ -461,6 +467,9 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
                 break;
             case 26: //error-dir
                 errorDir = getopt.getOptarg();
+                break;
+            case 28: //error-mail
+                errorMail = getopt.getOptarg();
                 break;
             case 27: //enable-mail-recipients
                 mailRecipients = true;
