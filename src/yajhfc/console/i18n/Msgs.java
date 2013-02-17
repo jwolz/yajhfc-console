@@ -17,12 +17,7 @@
  */
 package yajhfc.console.i18n;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import yajhfc.Utils;
+import yajhfc.util.MsgBundle;
 
 /**
  * Class holding the translations
@@ -31,13 +26,7 @@ import yajhfc.Utils;
  *
  */
 public class Msgs {
-    /**
-     * 
-     */
-    private static final String MESSAGE_BUNDLE_NAME = "yajhfc.console.i18n.Messages";
-    
-    private static ResourceBundle msgs = null;
-    private static boolean triedMsgLoad = false;
+    public static final MsgBundle msgBundle  = new MsgBundle("yajhfc.console.i18n.Messages");
     
     /**
      * Returns the translation of key. If no translation is found, the
@@ -46,7 +35,7 @@ public class Msgs {
      * @return
      */
     public static String _(String key) {
-        return _(key, key);
+        return msgBundle._(key, key);
     }
     
     /**
@@ -57,44 +46,9 @@ public class Msgs {
      * @return
      */
     public static String _(String key, String defaultValue) {
-        if (msgs == null)
-            if (triedMsgLoad)
-                return defaultValue;
-            else {
-                loadMessages();
-                return _(key, defaultValue);
-            }                
-        else
-            try {
-                return msgs.getString(key);
-            } catch (Exception e) {
-                return defaultValue;
-            }
+        return msgBundle._(key, defaultValue);
     }
-    
-    private static void loadMessages() {
-        triedMsgLoad = true;
-        
-        // Use special handling for english locale as we don't use
-        // a ResourceBundle for it
-        final Locale myLocale = Utils.getLocale();
-        if (myLocale.getLanguage().equals(Locale.ENGLISH.getLanguage())) {
-            if (Utils.debugMode) {
-                Logger.getLogger(Msgs.class.getName()).fine("Not loading messages for language " + myLocale);
-            }
-            msgs = null;
-        } else {
-            try {
-                if (Utils.debugMode) {
-                    Logger.getLogger(Msgs.class.getName()).fine("Trying to load messages for language " + myLocale);
-                }
-                msgs = ResourceBundle.getBundle(MESSAGE_BUNDLE_NAME, myLocale);
-            } catch (Exception e) {
-                Logger.getLogger(Msgs.class.getName()).log(Level.INFO, "Error loading messages for " + myLocale, e);
-                msgs = null;
-            }
-        }
-    }
+
     
     private Msgs() {};
 }
