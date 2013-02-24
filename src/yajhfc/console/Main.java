@@ -468,9 +468,9 @@ public class Main {
             System.exit(EXIT_CODE_WRONG_PARAMETERS);
         }
         if (opts.mailRecipients && mailRecipients.size()>0) {
-            if (SendControllerMailer.INSTANCE != null)
+            if (SendControllerMailer.isAvailable())
                 try {
-                    SendControllerMailer.INSTANCE.mailToRecipients(sendController, mailRecipients);
+                    SendControllerMailer.getInstance().mailToRecipients(sendController, mailRecipients);
                 } catch (MailException e) {
                     dialogs.showExceptionDialog("Error sending mail to " + mailRecipients, e);
                 }
