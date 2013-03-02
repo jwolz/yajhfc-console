@@ -55,8 +55,8 @@ import yajhfc.plugin.PluginManager;
 import yajhfc.send.LocalFileTFLItem;
 import yajhfc.send.SendController;
 import yajhfc.send.SendControllerListener;
-import yajhfc.send.SendControllerMailer;
-import yajhfc.send.SendControllerMailer.MailException;
+import yajhfc.send.email.MailException;
+import yajhfc.send.email.YajMailer;
 import yajhfc.send.SendFaxArchiver;
 import yajhfc.send.StreamTFLItem;
 import yajhfc.server.Server;
@@ -136,7 +136,7 @@ public class Main {
                 }
             } 
         }
-        if (opts.mailRecipients && !SendControllerMailer.isAvailable()) {
+        if (opts.mailRecipients && !YajMailer.isAvailable()) {
             printError(_("enable-mail-recipients specified, but plugin to send mails is not installed,"));
             return false;
         }
@@ -447,7 +447,7 @@ public class Main {
                 int num;
                 if (opts.mailRecipients) {
                     mailRecipients = new ArrayList<String>();
-                    FaxnumberExtractor extractor = new FaxnumberExtractor(FaxnumberExtractor.getDefaultPattern(), SendControllerMailer.getDefaultMailPattern());
+                    FaxnumberExtractor extractor = new FaxnumberExtractor(FaxnumberExtractor.getDefaultPattern(), YajMailer.getDefaultMailPattern());
                     num = extractor.extractFromMultipleDocuments(sendController.getFiles(), opts.recipients, mailRecipients);
                 } else {
                     FaxnumberExtractor extractor = new FaxnumberExtractor();
@@ -468,9 +468,9 @@ public class Main {
             System.exit(EXIT_CODE_WRONG_PARAMETERS);
         }
         if (opts.mailRecipients && mailRecipients.size()>0) {
-            if (SendControllerMailer.isAvailable())
+            if (YajMailer.isAvailable())
                 try {
-                    SendControllerMailer.getInstance().mailToRecipients(sendController, mailRecipients);
+                    YajMailer.getInstance().mailToRecipients(sendController, mailRecipients);
                 } catch (MailException e) {
                     dialogs.showExceptionDialog("Error sending mail to " + mailRecipients, e);
                 }
