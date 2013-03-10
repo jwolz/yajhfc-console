@@ -65,6 +65,7 @@ import yajhfc.server.ServerOptions;
 import yajhfc.ui.YajOptionPane;
 import yajhfc.ui.console.ConsoleIO;
 import yajhfc.ui.console.ConsoleProgressUI;
+import yajhfc.util.BOMInputStream;
 import yajhfc.util.ExternalProcessExecutor;
 
 /**
