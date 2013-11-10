@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import yajhfc.Utils;
+import yajhfc.VersionInfo;
 import yajhfc.file.textextract.RecipientExtractionMode;
 import yajhfc.launch.CommonCommandLineOpts;
 import yajhfc.launch.HelpPrinter;
@@ -780,9 +780,9 @@ public class ConsCommandLineOpts extends CommonCommandLineOpts {
     
     public static void printVersionInfo() {
     	PrintWriter out = ConsoleIO.getDefault().writer();
-    	out.println(Utils.AppShortName + " " + Utils.AppVersion);
-    	out.println(Utils.AppCopyright);
-    	out.println("For more information, please visit: " + Utils.HomepageURL);
+    	out.println(VersionInfo.AppShortName + " " + VersionInfo.AppVersion);
+    	out.println(VersionInfo.AppCopyright);
+    	out.println("For more information, please visit: " + VersionInfo.HomepageURL);
     	out.println();
     	out.println("Java " + System.getProperty("java.version") + " (" + System.getProperty("java.vendor") + ')');
     	out.println("     " + System.getProperty("java.runtime.name") + ' ' + System.getProperty("java.runtime.version"));
