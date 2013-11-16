@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import yajhfc.launch.Launcher2;
+
 
 /**
  * Implements console IO that can either use the JDK6 console object
@@ -99,30 +101,9 @@ public abstract class ConsoleIO {
      */
     protected PrintWriter outputErrWriter = null;
     
-    private static boolean isPropertyTrue(String propName) {
-        String value = System.getProperty(propName);
-        if (value != null) {
-            if ("true".equals(value) || "yes".equals(value))
-                return true;
-            if ("false".equals(value) || "no".equals(value))
-                return false;
-            
-            int i_val = 0;
-            try {
-                i_val = Integer.parseInt(value);
-            } catch (NumberFormatException e) {
-                System.err.println("Error parsing " + propName + ":");
-                e.printStackTrace();
-            }
-            return (i_val != 0);
-        } else {
-            return false;
-        }
-    }
-    
     public static ConsoleIO getDefault() {
         if (DEFAULT == null) {
-            if (isPropertyTrue("yajhfc.ui.console.ConsoleIO.forceStreamConsoleIO")) {
+            if (Launcher2.isPropertyTrue("yajhfc.ui.console.ConsoleIO.forceStreamConsoleIO")) {
                 DEFAULT = new StreamConsoleIO();
             } else {
                 Console cons = System.console();
