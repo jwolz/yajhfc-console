@@ -1,6 +1,6 @@
 # Spanish/Spain translation of YajHFC console.
-# Copyright (C) 2011 THE  YajHFC console'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the  YajHFC console package.
+# Copyright (C) 2011 THE YajHFC console'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the YajHFC console package.
 # Elsa Andrés <e.andres@ist-sci.com>, 2011.
 #
 #
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YajHFC console 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-16 11:24+0100\n"
-"PO-Revision-Date: 2011-10-23 13:17+0200\n"
+"PO-Revision-Date: 2013-12-01 12:50+0100\n"
 "Last-Translator: Elsa Andrés <e.andres@ist-sci.com>\n"
 "Language-Team: Spanish/Spain <yajhfc-translators@googlegroups.com>\n"
 "Language: \n"
@@ -43,7 +43,7 @@ msgstr ""
 
 #: ../src/yajhfc/console/Main.java:103 ../src/yajhfc/console/Main.java:107
 msgid "Does not exist or is not a directory."
-msgstr ""
+msgstr "No existe o no es un directorio."
 
 #: ../src/yajhfc/console/Main.java:120
 msgid "You cannot both query a job status and specify documents to send."
@@ -75,6 +75,8 @@ msgstr ""
 msgid ""
 "enable-mail-recipients specified, but plugin to send mails is not installed,"
 msgstr ""
+"Ha especificado enable-mail-recipients pero no ha instalado el complemento "
+"para el envío de correos."
 
 #: ../src/yajhfc/console/Main.java:177
 msgid "Unsupported batch data format"
@@ -132,10 +134,12 @@ msgstr "Resolución del fax {0} no válida, se usará la predeterminada."
 #: ../src/yajhfc/console/Main.java:457
 msgid "Warning: No recipients could be found in the specified documents."
 msgstr ""
+"Alerta: No se ha podido encontrar destinatarios en los documentos "
+"especificados."
 
 #: ../src/yajhfc/console/Main.java:465
 msgid "No recipients specified for fax, exiting program."
-msgstr ""
+msgstr "No se han especificado destinatarios para el fax, se sale del programa."
 
 #: ../src/yajhfc/console/Main.java:493
 msgid "Invalid data specified for fax, exiting program."
