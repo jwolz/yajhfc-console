@@ -447,7 +447,7 @@ public class Main {
                 int num;
                 if (opts.mailRecipients) {
                     mailRecipients = new ArrayList<String>();
-                    FaxnumberExtractor extractor = new FaxnumberExtractor(FaxnumberExtractor.getDefaultPattern(), YajMailer.getDefaultMailPattern());
+                    FaxnumberExtractor extractor = new FaxnumberExtractor(FaxnumberExtractor.getDefaultPattern(), FaxnumberExtractor.getDefaultMailPattern());
                     num = extractor.extractFromMultipleDocuments(sendController.getFiles(), opts.recipients, mailRecipients);
                 } else {
                     FaxnumberExtractor extractor = new FaxnumberExtractor();
