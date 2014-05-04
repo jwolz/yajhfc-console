@@ -441,14 +441,17 @@ public class Main {
         
         // n.b.: All documents should have been added at this point
         List<String> mailRecipients = null;
+        List<String> subjects = null;
         if ((opts.extractRecipients == RecipientExtractionMode.YES)
                 || (opts.extractRecipients == RecipientExtractionMode.AUTO)) {
             try {
                 int num;
                 if (opts.mailRecipients) {
                     mailRecipients = new ArrayList<String>();
-                    FaxnumberExtractor extractor = new FaxnumberExtractor(FaxnumberExtractor.getDefaultPattern(), FaxnumberExtractor.getDefaultMailPattern());
-                    num = extractor.extractFromMultipleDocuments(sendController.getFiles(), opts.recipients, mailRecipients);
+                    subjects = new ArrayList<String>();
+                    FaxnumberExtractor extractor = new FaxnumberExtractor(FaxnumberExtractor.getDefaultPattern(), FaxnumberExtractor.getDefaultMailPattern(), FaxnumberExtractor.getDefaultSubjectPattern());
+                    num = extractor.extractFromMultipleDocuments(sendController.getFiles(), opts.recipients, mailRecipients, subjects);
+                    num = num - subjects.size(); // Subjects are no recipients...
                 } else {
                     FaxnumberExtractor extractor = new FaxnumberExtractor();
                     num = extractor.extractFromMultipleDocuments(sendController.getFiles(), opts.recipients);
@@ -466,6 +469,13 @@ public class Main {
             if (archiver != null)
                 archiver.saveFaxAsError();
             System.exit(EXIT_CODE_WRONG_PARAMETERS);
+        }
+        if (subjects.size() > 0) {
+            // Set subject to the last subject found
+            String subject = subjects.get(subjects.size()-1);
+            if (! FaxnumberExtractor.SUBJECT_DOCTITLE.equalsIgnoreCase(subject.trim())) {
+                sendController.setSubject(subject);
+            }
         }
         if (opts.mailRecipients && mailRecipients.size()>0) {
             if (YajMailer.isAvailable())
