@@ -464,20 +464,20 @@ public class Main {
             }
         }
         
-        if (opts.recipients.size() == 0 && (!opts.mailRecipients || opts.mailRecipients && mailRecipients.size()==0)) {
+        if (opts.recipients.size() == 0 && (!opts.mailRecipients || opts.mailRecipients && mailRecipients != null &&  mailRecipients.size()==0)) {
             printError(_("No recipients specified for fax, exiting program."));
             if (archiver != null)
                 archiver.saveFaxAsError();
             System.exit(EXIT_CODE_WRONG_PARAMETERS);
         }
-        if (subjects.size() > 0) {
+        if (subjects != null && subjects.size() > 0) {
             // Set subject to the last subject found
             String subject = subjects.get(subjects.size()-1);
             if (! FaxnumberExtractor.SUBJECT_DOCTITLE.equalsIgnoreCase(subject.trim())) {
                 sendController.setSubject(subject);
             }
         }
-        if (opts.mailRecipients && mailRecipients.size()>0) {
+        if (opts.mailRecipients && mailRecipients != null && mailRecipients.size()>0) {
             if (YajMailer.isAvailable())
                 try {
                     YajMailer.getInstance().mailToRecipients(sendController, mailRecipients);
