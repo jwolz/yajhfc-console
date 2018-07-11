@@ -5,3 +5,7 @@ syntax: regexp
 ^build$
 syntax: regexp
 \.mo$
+syntax: regexp
+\.po~$
+syntax: regexp
+\.pot~$
